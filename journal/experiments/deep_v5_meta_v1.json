@@ -1,0 +1,34 @@
+{
+  "experiment_id": "deep_v5_meta_v1",
+  "registered_at": "2026-07-24T12:00:00-04:00",
+  "parent": "options_etf_gate_v5",
+  "status": "pre_registered_before_any_results",
+  "objective": "Test whether a GPU-trained meta-model can predict which v5 entries win, from point-in-time features, well enough to improve v5 by trading only the top-ranked entries -- and whether the filtered book survives the canonical gate.",
+  "honest_framing": {
+    "labels_are_modeled": "Labels are the BS-MODELED v5 PnL (no OPRA real options yet), so this tests 'are v5's winners predictable from features', an upper bound to confirm with real options once OPRA is signed.",
+    "small_n": "1044 trades, 81% base win rate -- the task is spotting the ~19% losers. Small n; expect the gate to still bite (the documented per-trade-Sharpe deflation wall). GPU is used as specified but is NOT the bottleneck at this scale; it earns its keep only at intraday x real-option scale.",
+    "not_a_v5_retune": "This is a NEW hypothesis (a meta-filter on v5), not a parameter change to v5. v5 stays the champion base."
+  },
+  "data": "journal/scorecards/options_etf_gate_v5_trades.jsonl (1044 v5 entries, 2019-2026)",
+  "label": "win = pnl_usd > 0 (meta-label, Lopez de Prado)",
+  "features_point_in_time_no_lookahead": [
+    "pop", "entry_iv", "return_on_risk (credit/max_risk)", "credit_usd", "max_risk_usd",
+    "structure (one-hot put_spread/call_spread/iron_condor)", "bucket (target-encoded or one-hot)",
+    "magnitude_pct", "vrp_pct", "term_ratio", "p_eruption_5d", "p_eruption_21d",
+    "trend_dist_50 (spot/sma50-1)", "trend_dist_200 (spot/sma200-1)", "rv20", "iv_rv (entry_iv/rv20)",
+    "entry_month", "entry_dow"
+  ],
+  "excluded_leaky": ["exit", "holding_days", "pnl_usd", "hold_to_expiry_pnl_usd", "terminal_spot", "exit_date", "cost_usd"],
+  "model": "XGBoost, tree_method=hist, device=cuda, float32, QuantileDMatrix; expanding walk-forward by date (macro_gpu_lab walk_forward_splits), refit per fold, purged by the trade horizon.",
+  "use": "Trade only entries in the model's top decile of predicted win-prob per fold -> filtered v5. Report the filtered book's cluster-adjusted PnL + canonical gate.",
+  "trial_accounting": {
+    "n_trials_note": "The meta-model's search (the single pre-registered config here) adds to the deflation; report DSR with n_trials counting this experiment. No hyperparameter sweep -- one fixed config. A sweep would be a separate prereg counting every combo.",
+    "no_threshold_softening": "PBO<0.5 AND DSR>0 fixed. Higher win rate on a filtered subset does not override a failed DSR or a smaller-n deflation penalty."
+  },
+  "falsifiable_predictions": [
+    "top-decile filtered win rate > the 81% base",
+    "filtered per-trade mean PnL > unfiltered v5",
+    "the meta-model's out-of-sample rank-IC (pred win-prob vs realized win) is > 0"
+  ],
+  "promotion": "No promotion. Informs whether an ML meta-filter is worth building on real-option labels once OPRA is available. SHADOW throughout."
+}

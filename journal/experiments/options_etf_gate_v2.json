@@ -1,0 +1,67 @@
+{
+  "experiment_id": "options_etf_gate_v2",
+  "registered_at": "2026-07-23T11:20:00-04:00",
+  "status": "pre_registered_before_any_results",
+  "objective": "Test whether the frozen defined-risk short-put-spread structure clears the canonical overfit gate when entries are additionally filtered by the point-in-time Qlib per-asset bullish signal, over the wider v2 ETF universe.",
+  "motivation": {
+    "gap_in_v1": "options_etf_gate_v1 deliberately omitted the Qlib filter because no point-in-time per-asset history existed. Under that purely global rule every symbol entered on identical dates (pairwise Jaccard of entry-date sets = 1.0), so pooled n=369 collapsed to 41 cluster observations and cluster_adjusted equalled spy_only.",
+    "what_changed": "qlib_lab.score_history now exports a walk-forward, no-lookahead per-asset score/lean/conviction history (2019-07-18 onward), so the live filter can be replayed honestly.",
+    "measured_expectation": "The qlib_evidence diagnostic (journal/scorecards/qlib_evidence.json) measured 36 independent entry dates without the filter versus 192 with it (mean 1.6 symbols per entry date, Jaccard 0.0168). The filter is expected to REDUCE trade count (1116 -> 307) while RAISING independent observations."
+  },
+  "hypothesis": "Qlib's cross-sectional lean decorrelates entry timing enough to make the gate decidable, and the selected subset performs at least as well per trade as the unfiltered population.",
+  "scope": {
+    "mode": "offline research; SHADOW advisory only; no broker integration",
+    "strategy": "etf_short_put_spread_v1",
+    "structures_excluded": "call spread and iron condor are NOT evaluated here: the filter admits only bullish lean, so only the put spread is reachable. They require their own pre-registration.",
+    "universe_source": "options_etf_universe_v2 candidate_universe (31 symbols, frozen)",
+    "window": "bounded by the score export (2019-07-18 onward); shorter than v1's price history and stated in the scorecard",
+    "price_source": "local qlib_lab/csv/<asset>.csv, Yahoo back-adjustment undone via the factor column"
+  },
+  "entry_policy": {
+    "global_veto": {
+      "note": "unchanged from v1 and the live lane",
+      "eruption_predicted": false,
+      "calm_5d": true,
+      "magnitude_pct_max_exclusive": 0.70
+    },
+    "qlib_filter": {
+      "source": "qlib_lab/journal/exports/qlib_score_history.parquet",
+      "lean": 1,
+      "minimum_conviction": 0.70,
+      "semantics": "lean is a CROSS-SECTIONAL RANK over the 76-asset model universe: top-TOPK(8) score +1. Selectivity is structural, not a tuned threshold.",
+      "no_lookahead": "refit every 126 sessions on labels fully realized before the refit date (cutoff = dates[i - horizon]); models applied forward only"
+    },
+    "contracts": "identical to options_etf_gate_v1: monthly third-Friday nearest 45 DTE within 30-60, short put at -0.30 delta, long put exactly spread_width lower",
+    "costs": "BACKTEST_COST_PER_LEG_RT per leg, round trip",
+    "settlement": "hold to expiration at intrinsic value (canonical; no take-profit, stop-loss, or DTE exit)",
+    "non_overlap": "one open position per symbol; a new entry is refused until the prior expiry has passed"
+  },
+  "carried_over_deviations": [
+    {
+      "deviation": "implied volatility is proxied, not observed",
+      "method": "entry IV = RV20(symbol) * premium_factor, premium_factor = (VIX/100)/RV20(SPY)",
+      "consequence": "the per-asset IV/RV test still degenerates to a market-wide condition; unchanged from v1 and never presented as observed IV"
+    },
+    {
+      "deviation": "model credit instead of natural bid/ask credit",
+      "consequence": "entry pricing is optimistic relative to live execution; measured edge is an upper bound"
+    }
+  ],
+  "independence_and_inference": {
+    "required_handling": "cluster same-date entries into one observation (mean PnL), identical to v1",
+    "headline_view": "cluster_adjusted",
+    "why_it_matters_here": "The whole point of this experiment is that clustering should now cost far less than it did in v1, because entries are staggered rather than simultaneous. If cluster_adjusted n does not rise well above 41, the filter did NOT add evidence and this must be reported as a negative result.",
+    "reported_views": ["pooled", "cluster_adjusted (HEADLINE)", "spy_only"]
+  },
+  "trial_accounting": {
+    "n_trials": 40,
+    "composition": "31 symbol hypotheses in this experiment plus the 9 already spent in options_etf_gate_v1; deflation must pay for every look taken on this family, not just the current run.",
+    "no_threshold_softening": "Canonical thresholds fixed: PBO < 0.5 AND Deflated Sharpe > 0. A higher trade count does not lower the bar, and a high raw profit factor never overrides a failed DSR."
+  },
+  "falsifiable_predictions": [
+    "cluster_adjusted n exceeds 100 (versus 41 in v1)",
+    "PBO is computable rather than unavailable",
+    "if the Qlib filter carries genuine information, per-trade mean PnL of the filtered set is >= the unfiltered v1 population"
+  ],
+  "promotion": "No promotion. A pass changes only a display badge. Live promotion additionally requires natural-pricing confirmation, live-quote liquidity validation, and human review."
+}

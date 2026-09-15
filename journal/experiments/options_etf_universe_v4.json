@@ -1,0 +1,311 @@
+{
+  "experiment_id": "options_etf_universe_v4",
+  "registered_at": "2026-07-24T17:30:00-04:00",
+  "status": "pre_registered_live_promotion",
+  "supersedes": "options_etf_universe_v3",
+  "supersession_note": "v1 and v2 are NOT modified; they remain audit records for results already published under them. v3 makes the magnitude/VRP regime ADVISORY instead of a hard veto, keeps the eruption block, relaxes the calm requirement, adds a $1000 per-trade max-risk cap, and uses live Robinhood spot as the price anchor when available. Deliberately trades more; defined risk + the cap + shadow tracking manage it. This is a NEW hypothesis family, not a softening of frozen v2.",
+  "objective": "Promote the researched v11 rule into the LIVE advisory lane. Until now the live desk ran the v3-equivalent rule (eruption veto + Qlib lean routing + POP + IV/RV + $1,000 cap) and had NEITHER the 200-day trend gate (v5) NOR the call momentum gate (v10) NOR any managed exit (v11). This closes the gap between what was researched and what is actually alerted.",
+  "evidence_from_options_etf_gate_v1": {
+    "finding": "Under a purely global entry rule every universe symbol entered on identical dates: pooled n=369 collapsed to 41 cluster-adjusted observations, and cluster_adjusted n equalled spy_only n.",
+    "implication": "Widening the universe increases live candidate COVERAGE but adds close to zero independent statistical evidence unless a per-asset filter (Qlib lean/conviction) actually discriminates between symbols. Do not expect a wider universe to help the gate.",
+    "gate_status": "PBO 0.0159 (passes) but Deflated Sharpe -6.32 (fails). Not cleared."
+  },
+  "scope": {
+    "mode": "SHADOW advisory only",
+    "structures": [
+      "etf_short_put_spread_v1",
+      "etf_short_call_spread_v1",
+      "etf_iron_condor_v1"
+    ],
+    "candidate_universe": {
+      "SPY": {
+        "qlib_asset": "SPY",
+        "bucket": "broad_equity",
+        "spread_width": 5.0
+      },
+      "QQQ": {
+        "qlib_asset": "QQQ",
+        "bucket": "broad_equity",
+        "spread_width": 5.0
+      },
+      "IWM": {
+        "qlib_asset": "IWM",
+        "bucket": "broad_equity",
+        "spread_width": 5.0
+      },
+      "DIA": {
+        "qlib_asset": "DIA",
+        "bucket": "broad_equity",
+        "spread_width": 5.0
+      },
+      "TLT": {
+        "qlib_asset": "TLT",
+        "bucket": "rates",
+        "spread_width": 2.0
+      },
+      "IEF": {
+        "qlib_asset": "IEF",
+        "bucket": "rates",
+        "spread_width": 2.0
+      },
+      "AGG": {
+        "qlib_asset": "AGG",
+        "bucket": "rates",
+        "spread_width": 2.0
+      },
+      "HYG": {
+        "qlib_asset": "HYG",
+        "bucket": "credit",
+        "spread_width": 2.0
+      },
+      "LQD": {
+        "qlib_asset": "LQD",
+        "bucket": "credit",
+        "spread_width": 5.0
+      },
+      "GLD": {
+        "qlib_asset": "GOLD",
+        "bucket": "metals",
+        "spread_width": 5.0
+      },
+      "SLV": {
+        "qlib_asset": "SLV",
+        "bucket": "metals",
+        "spread_width": 1.0
+      },
+      "XLF": {
+        "qlib_asset": "XLF",
+        "bucket": "sector",
+        "spread_width": 1.0
+      },
+      "XLE": {
+        "qlib_asset": "XLE",
+        "bucket": "sector",
+        "spread_width": 1.0
+      },
+      "XLK": {
+        "qlib_asset": "XLK",
+        "bucket": "sector",
+        "spread_width": 5.0
+      },
+      "XLV": {
+        "qlib_asset": "XLV",
+        "bucket": "sector",
+        "spread_width": 5.0
+      },
+      "XLI": {
+        "qlib_asset": "XLI",
+        "bucket": "sector",
+        "spread_width": 5.0
+      },
+      "XLY": {
+        "qlib_asset": "XLY",
+        "bucket": "sector",
+        "spread_width": 5.0
+      },
+      "XLP": {
+        "qlib_asset": "XLP",
+        "bucket": "sector",
+        "spread_width": 2.0
+      },
+      "XLU": {
+        "qlib_asset": "XLU",
+        "bucket": "sector",
+        "spread_width": 2.0
+      },
+      "XLB": {
+        "qlib_asset": "XLB",
+        "bucket": "sector",
+        "spread_width": 2.0
+      },
+      "XLRE": {
+        "qlib_asset": "XLRE",
+        "bucket": "sector",
+        "spread_width": 2.0
+      },
+      "XLC": {
+        "qlib_asset": "XLC",
+        "bucket": "sector",
+        "spread_width": 5.0
+      },
+      "SMH": {
+        "qlib_asset": "SMH",
+        "bucket": "industry",
+        "spread_width": 5.0
+      },
+      "KRE": {
+        "qlib_asset": "KRE",
+        "bucket": "industry",
+        "spread_width": 2.0
+      },
+      "GDX": {
+        "qlib_asset": "GDX",
+        "bucket": "industry",
+        "spread_width": 2.0
+      },
+      "XBI": {
+        "qlib_asset": "XBI",
+        "bucket": "industry",
+        "spread_width": 5.0
+      },
+      "EEM": {
+        "qlib_asset": "EEM",
+        "bucket": "international",
+        "spread_width": 2.0
+      },
+      "EFA": {
+        "qlib_asset": "EFA",
+        "bucket": "international",
+        "spread_width": 5.0
+      },
+      "FXI": {
+        "qlib_asset": "FXI",
+        "bucket": "international",
+        "spread_width": 1.0
+      },
+      "EWZ": {
+        "qlib_asset": "EWZ",
+        "bucket": "international",
+        "spread_width": 1.0
+      },
+      "VNQ": {
+        "qlib_asset": "VNQ",
+        "bucket": "reit",
+        "spread_width": 2.0
+      }
+    },
+    "width_policy": "The nine v1 symbols keep their v1 widths exactly so results stay comparable with options_etf_gate_v1. New symbols use a frozen price band: <$40 -> 1.0, $40-100 -> 2.0, >$100 -> 5.0, evaluated once at registration and frozen thereafter.",
+    "data_note": "XLC has a shorter history (listed 2018); all other symbols carry the full local window.",
+    "excluded": "single stocks, leveraged/inverse ETFs, FX, crypto, indexes, futures, and every symbol outside this frozen map"
+  },
+  "entry_policy": {
+    "request_freshness": "The finalizer accepts only a request generated on the same America/New_York calendar date.",
+    "structure_routing": {
+      "rule": "Qlib per-asset directional lean selects the structure; a symbol is evaluated for exactly one structure per day.",
+      "bullish_lean_1": "etf_short_put_spread_v1",
+      "bearish_lean_minus_1": "etf_short_call_spread_v1",
+      "neutral_lean_0": "etf_iron_condor_v1",
+      "no_structure_shopping": "If the routed structure fails validation the symbol is rejected. The finalizer must never retry a different structure to manufacture a candidate."
+    },
+    "qlib": {
+      "required_fresh": true,
+      "status": "SHADOW discovery input; lack of promotion is displayed and never hidden",
+      "minimum_conviction_directional": 0.7,
+      "neutral_policy": "A neutral lean carries no directional conviction, so the iron condor does NOT use the conviction threshold. It instead requires a richer volatility premium (see asset_volatility) so the looser directional bar cannot become a back door."
+    },
+    "asset_volatility": {
+      "realized_vol": "annualized standard deviation of the last 20 completed daily log returns from the local Qlib CSV",
+      "implied_vol": "Robinhood short-leg quote implied_volatility",
+      "minimum_iv_rv_ratio_directional": 1.1,
+      "minimum_iv_rv_ratio_iron_condor": 1.2
+    },
+    "contracts": {
+      "dte_min": 30,
+      "dte_target": 45,
+      "dte_max": 60,
+      "short_put_delta_min": -0.35,
+      "short_put_delta_max": -0.25,
+      "short_call_delta_min": 0.25,
+      "short_call_delta_max": 0.35,
+      "long_leg": "same expiry, exactly spread_width beyond the short strike",
+      "entry_price": "natural executable-side credit: short bid minus long ask, summed over sides"
+    },
+    "liquidity": {
+      "quote_max_age_minutes": 15,
+      "bid_required_positive": true,
+      "ask_required_gte_bid": true,
+      "maximum_relative_spread_per_leg": 0.15,
+      "minimum_open_interest": 100,
+      "or_minimum_daily_volume": 20,
+      "minimum_bid_and_ask_size_when_reported": 1
+    },
+    "hard_veto": {
+      "vol_signal_required_fresh": true,
+      "eruption_predicted": false,
+      "note": "The ONLY hard blocks are a predicted vol eruption (genuine 'do not sell premium into a coming blowup' protection) and missing/stale signal or Qlib data. Magnitude and calm no longer block; they advise. The eruption block is never relaxed to find trades."
+    },
+    "advisory_sizing": {
+      "magnitude_pct_high": 0.7,
+      "policy": "magnitude_pct is shown and drives a size_hint only: at/above magnitude_pct_high the candidate is flagged 'reduce size' (1 lot / smaller); below, 'normal'. It never removes a candidate. calm_5d/calm_21d are displayed as context, not gates.",
+      "vrp": "VRP percentile is advisory context (rich VRP favors selling premium); never a standalone block."
+    },
+    "signal_source": {
+      "spot": "live Robinhood equity quote when a same-session live-market snapshot is supplied; else prior qlib close",
+      "realized_vol": "always the trailing-20 historical RV from the local Qlib CSV (no meaningful intraday RV)",
+      "note": "Python stays authoritative; Codex only supplies read-only live quotes. spot_source is recorded per row."
+    },
+    "minimum_pop": 0.51,
+    "pop_note": "Probability of profit at expiry (tastytrade-style, risk-neutral BS prob beyond the structure breakeven[s]); candidates below 0.51 are dropped. Advisory filter added with the v3 live policy; only removes trades, never adds.",
+    "trend_gate": {
+      "rule": "do NOT sell PUT-side premium (put spread / iron condor) when close < 200-day SMA",
+      "source": "research v5",
+      "evidence": "2022 loss -$7,025 -> -$2,802"
+    },
+    "call_momentum_gate": {
+      "rule": "do NOT sell CALL premium when 126-session momentum > +0.10",
+      "source": "research v10",
+      "evidence": "call PnL -$913 -> -$454; cluster total +22%"
+    }
+  },
+  "structure_invariants": {
+    "etf_short_put_spread_v1": "credit > 0 and credit < put width; max risk = width - credit",
+    "etf_short_call_spread_v1": "credit > 0 and credit < call width; max risk = width - credit",
+    "etf_iron_condor_v1": "one expiry, both sides present, total credit > 0 and total credit < max(put width, call width); only one side can finish in the money, so max risk = max(width) - total credit"
+  },
+  "portfolio_policy": {
+    "maximum_candidates": 5,
+    "one_candidate_per_underlying": true,
+    "bucket_caps": {
+      "broad_equity": 2,
+      "sector": 2,
+      "industry": 1,
+      "international": 1,
+      "rates": 1,
+      "credit": 1,
+      "metals": 1,
+      "reit": 1
+    },
+    "ranking": [
+      "qlib_conviction_desc",
+      "return_on_risk_desc",
+      "maximum_leg_relative_spread_asc",
+      "symbol_asc"
+    ],
+    "never_force_five": true,
+    "max_trade_risk_usd": 1000,
+    "max_trade_risk_note": "Hard rail: any candidate whose defined max risk exceeds $1000 is dropped. Defined-risk ETF spreads (~$100-500) pass; this only excludes oversized structures."
+  },
+  "trial_accounting": {
+    "n_trials": 93,
+    "note": "no new search; this adopts already-registered gates into production."
+  },
+  "macro_policy": {
+    "hq_macro_universe": "context and audit metadata only; never a source of tradable symbols",
+    "macro_gpu": "context only unless fresh; stale or missing stays unknown and cannot create a candidate",
+    "no_opaque_blending": true
+  },
+  "operating_status": "SHADOW advisory; accepted by the user as the operating ETF lane; not gate-cleared.",
+  "gap_discovered": "Audit on 2026-07-24 found no trend/momentum logic in desk/etf_options.py. The v4-v14 gates existed only in desk/etf_backtest.py. The live lane's shadow ledger also measured hold-to-expiry, while the research assumed a 50% profit target. The live desk was therefore NOT the strategy the backtests described.",
+  "changes_to_live": {
+    "1_trend_gate_v5": "Do not sell PUT-side premium (put spread / iron condor) when the symbol's close is below its 200-day SMA. Backtest evidence: cut the 2022 loss from -$7,025 to -$2,802.",
+    "2_momentum_gate_v10": "Do not sell CALL-side premium when the symbol's 126-session momentum exceeds +10%. Backtest evidence: call PnL -$913 -> -$454; cluster total +22%.",
+    "3_exit_management_v11": "ADVISORY exit signals on the daily marks: flag CLOSE_TARGET when a position can be bought back for <= 50% of entry credit, and CLOSE_STOP when the cost to close reaches 3x entry credit (a realized loss of 2x credit). Backtest evidence: 2022 -$2,880 -> -$2,312 at equal total PnL.",
+    "not_changed": "Universe (frozen 31), structures, POP>=0.51, IV/RV floors, $1,000 per-trade cap, eruption veto, DTE window, delta targets, read-only Robinhood, 127.0.0.1 UI, human places every order."
+  },
+  "honest_status_of_the_evidence": {
+    "gate": "v11 FAILS the canonical overfit gate (cluster-adjusted DSR -36.8, PBO 0.0). It is NOT gate-cleared and this promotion does not claim it is.",
+    "pricing": "All supporting backtests use Black-Scholes modeled prices with proxied IV, not real option fills -> an UPPER BOUND. Real-option confirmation is blocked on OPRA/Polygon.",
+    "in_sample": "The gates were selected on this same 2019-2026 sample. Expect live results to be worse than backtested.",
+    "why_promote_anyway": "This is an ADVISORY desk: it sends Telegram alerts and a human decides every trade. The change makes the alerts match the best-researched rule instead of an older, strictly-worse one (v3 lost -$7,025 in 2022 where v11 lost -$2,312 on the same data). Promoting a better-researched advisory rule is a lower bar than promoting a strategy to automated execution, which is NOT happening."
+  },
+  "monitoring": "The SHADOW ledger keeps tracking every alerted candidate hold-to-expiry as the canonical measurement, so live results accumulate against the same yardstick. If live tracking diverges materially from backtest expectations, revert to v3 behavior and re-open the research.",
+  "promotion_scope": "ADVISORY ONLY. No live execution, no broker keys, no automated orders. Robinhood remains read-only.",
+  "exit_policy": {
+    "advisory_only": true,
+    "profit_target": "CLOSE_TARGET when buy-back <= 50% of entry credit",
+    "stop_loss": "CLOSE_STOP when buy-back >= 3x entry credit (loss = 2x credit)",
+    "source": "research v11",
+    "evidence": "2022 -$2,880 -> -$2,312 at equal total PnL",
+    "measurement_note": "hold-to-expiry remains the canonical SHADOW measurement so the ledger stays comparable"
+  }
+}

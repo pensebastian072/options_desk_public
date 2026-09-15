@@ -1,0 +1,22 @@
+# Secrets — NEVER commit (telegram bot token, chat id, any future keys)
+secrets/*
+!secrets/*.example
+
+# Regenerable / local state
+.venv/
+data/
+journal/runs/
+journal/flags/
+journal/*.jsonl
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Keep journal/ tracked as a dir (history/audit committed selectively)
+!journal/.gitkeep
+
+# graphify knowledge graph output (local build artifact, rebuilt weekly)
+graphify-out/
+
+# local env
+.env

@@ -1,0 +1,68 @@
+{
+  "experiment_id": "options_etf_gate_v1",
+  "registered_at": "2026-07-23T00:00:00-04:00",
+  "status": "pre_registered_before_any_results",
+  "objective": "Test whether the frozen defined-risk short-put-spread structure, entered under the same global calm/no-eruption/magnitude regime the live P5 lane requires, clears the canonical overfit gate when replayed across the frozen liquid-ETF universe over the available local price history.",
+  "motivation": "options_gate_v1 produced only 16-24 non-overlapping SPY observations per strategy, so canonical PBO (>=40 trades) was unavailable and no verdict was possible. Replaying the same rule across nine ETFs raises the observation count enough for the gate to render an honest verdict.",
+  "scope": {
+    "mode": "offline research; SHADOW advisory only; no broker integration",
+    "strategy": "etf_short_put_spread_v1",
+    "universe_source": "options_etf_universe_v1 candidate_universe (frozen, unchanged)",
+    "symbols": ["SPY", "QQQ", "IWM", "DIA", "TLT", "GLD", "SLV", "XLF", "XLE"],
+    "price_source": "local qlib_lab/csv/<asset>.csv, Yahoo back-adjustment undone via the factor column"
+  },
+  "entry_policy": {
+    "global_veto": {
+      "note": "identical fields to the live lane; replayed point-in-time from the macro_gpu_lab shift detector",
+      "eruption_predicted": false,
+      "calm_5d": true,
+      "magnitude_pct_max_exclusive": 0.70
+    },
+    "contracts": {
+      "dte_min": 30,
+      "dte_target": 45,
+      "dte_max": 60,
+      "expiry_rule": "monthly third-Friday nearest 45 DTE inside the window",
+      "short_put_delta": -0.30,
+      "long_put": "same expiry, exactly spread_width below the short strike (frozen per symbol)",
+      "entry_price": "Black-Scholes model credit at entry IV; the live lane uses a strictly worse natural bid/ask credit"
+    },
+    "costs": "BACKTEST_COST_PER_LEG_RT applied per leg, round trip",
+    "settlement": "hold to expiration, intrinsic value at the last available close on or before expiry (canonical; no take-profit, stop-loss, or DTE exit)",
+    "non_overlap": "one open position per (symbol, strategy); a new entry is refused until the prior expiry has passed"
+  },
+  "declared_deviations_from_the_live_lane": [
+    {
+      "deviation": "no Qlib per-asset bullish discovery filter",
+      "reason": "Qlib lean/conviction is a live flag with no per-asset point-in-time replay available offline; re-running Qlib walk-forward per asset is out of scope.",
+      "consequence": "The backtest population is a SUPERSET of live-lane entries. Results describe the structure plus global regime, not the exact live rule. A pass here does NOT by itself promote the live lane."
+    },
+    {
+      "deviation": "implied volatility is proxied, not observed",
+      "reason": "Only SPY has a listed IV history (VIX) in the local store.",
+      "method": "entry IV for every symbol = RV20(symbol) * premium_factor, where premium_factor = (VIX/100) / RV20(SPY) on that date.",
+      "consequence": "Because premium_factor is a single market-wide scalar, the live lane's per-asset IV/RV ratio test DEGENERATES to a market-wide condition and cannot discriminate between assets. This backtest therefore cannot validate the per-asset IV/RV filter; it validates structure plus global regime only. Never present proxied IV as observed IV."
+    },
+    {
+      "deviation": "model credit instead of natural bid/ask credit",
+      "reason": "no historical option bid/ask data on this box",
+      "consequence": "entry pricing is optimistic relative to live execution; treat measured edge as an upper bound"
+    }
+  ],
+  "independence_and_inference": {
+    "problem": "SPY, QQQ, DIA and IWM are highly correlated; pooling their same-date entries would fake independent observations and inflate both n and any PBO/DSR verdict.",
+    "required_handling": "cluster same-date entries: all positions opened on one entry date collapse to a single clustered observation equal to the mean PnL of that date's entries.",
+    "headline_view": "cluster_adjusted",
+    "reported_views": [
+      "pooled — every (symbol, entry) observation, naive and known to overstate independence",
+      "cluster_adjusted — one observation per entry date (HEADLINE; the only view a promotion decision may use)",
+      "spy_only — directly comparable to options_gate_v1"
+    ]
+  },
+  "trial_accounting": {
+    "n_trials": 9,
+    "reason": "one frozen strategy hypothesis per each of the nine universe symbols; every future structure or parameter variant must increase this count",
+    "no_threshold_softening": "Canonical thresholds are fixed: PBO < 0.5 AND Deflated Sharpe > 0. A high raw profit factor never overrides a failed DSR or an unavailable PBO."
+  },
+  "promotion": "No promotion. A pass changes only a display badge. Live promotion additionally requires the Qlib filter to be validated, natural-pricing confirmation, >=40 settled cluster-adjusted observations, and human review."
+}

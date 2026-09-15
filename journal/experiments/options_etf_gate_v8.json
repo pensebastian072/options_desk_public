@@ -1,0 +1,31 @@
+{
+  "experiment_id": "options_etf_gate_v8",
+  "registered_at": "2026-07-24T14:00:00-04:00",
+  "parent": "options_etf_gate_v5",
+  "status": "pre_registered_before_any_results",
+  "objective": "Test whether DROPPING the bearish short-call-spread structure (trading only bullish put spreads and neutral iron condors) improves the v5 book. On a bearish Qlib lean the desk simply does not trade.",
+  "selection_bias_disclosure": {
+    "how_this_arose": "The v5 7-year P&L breakdown showed call spreads LOST money (-$913) while iron condors (+$9,729) and put spreads (+$3,534) made money. The hypothesis was formed AFTER seeing that in-sample result -- this is disclosed, not hidden.",
+    "why_it_is_not_pure_curve_fitting": "There is an a priori economic mechanism: US equity ETFs carry a positive long-run drift (equity risk premium). A short call spread sells that upside, so it structurally fights the drift, and over a mostly-bull sample it should lose. The prediction follows from the mechanism, not only from the fitted result.",
+    "honest_limit": "Because the idea came from this sample, a good in-sample result is PARTLY guaranteed. The real confirmation is (a) the mechanism, (b) whether the improvement holds in the 2022 bear where short calls SHOULD have helped, and (c) an out-of-sample/real-option re-test later. Do not treat a v8 win as decisive."
+  },
+  "change_from_v5": {
+    "only_change": "route_from_lean no longer maps lean=-1 to etf_short_call_spread_v1; bearish-lean symbols are simply skipped that day. Bullish -> put spread and neutral -> iron condor are unchanged, as are the 200-day trend gate, POP>=0.51, $1000 cap, eruption veto, and the 50%-profit-target exit.",
+    "structures": ["etf_short_put_spread_v1", "etf_iron_condor_v1"]
+  },
+  "falsifiable_predictions": [
+    "total cluster-adjusted PnL improves vs v5 (+$5,111)",
+    "2022 gets WORSE or roughly unchanged (short calls are the one structure that should help in a bear; if 2022 improves a lot, the call-spread loss was not really directional)",
+    "trade count falls by roughly the call-spread share (~26% of v5 entries)"
+  ],
+  "guardrails": {
+    "no_p_hacking": "Registered ONCE with the single change fixed. If v8 does not beat v5 we keep v5 and report the negative. No further structure-dropping sweeps.",
+    "gate_unchanged": "PBO<0.5 AND DSR>0 fixed. Fewer trades raise the deflation bar.",
+    "same_deviations": "Proxied IV, constant-IV repricing, model credit -> results remain an UPPER BOUND."
+  },
+  "trial_accounting": {
+    "n_trials": 93,
+    "note": "Same 31-symbol universe; dropping a structure does not add new search breadth, but the in-sample origin of the idea is the real statistical cost (see disclosure)."
+  },
+  "promotion": "No promotion. Informs whether the live desk should stop routing bearish leans to call spreads (its own pre-registered change). SHADOW throughout."
+}

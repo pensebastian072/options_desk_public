@@ -1,0 +1,27 @@
+{
+  "experiment_id": "options_etf_gate_v12",
+  "registered_at": "2026-07-24T16:30:00-04:00",
+  "parent": "options_etf_gate_v10",
+  "status": "pre_registered_before_any_results",
+  "guardrails": {
+    "no_p_hacking": "Each is registered ONCE with fixed parameters before running. Failures are reported and the variant dropped; no parameter sweeps.",
+    "multiple_testing_disclosure": "These are the 11th-13th variants on the same data. Accumulated searching is itself a statistical cost: the more variants tried, the more likely one looks good by luck. Treat any single winner with more suspicion than the first result, and confirm on real-option data before promoting anything.",
+    "gate_unchanged": "PBO<0.5 AND DSR>0 fixed.",
+    "same_deviations": "Proxied IV, constant-IV repricing, model credit -> UPPER BOUND."
+  },
+  "trial_accounting": {
+    "n_trials": 93,
+    "note": "same universe/structures; these are policy refinements, but see the multiple-testing disclosure."
+  },
+  "promotion": "No promotion. SHADOW research. v5 stays live; v10 remains the leading candidate unless one of these clearly beats it.",
+  "objective": "STRIKE SELECTION lever (never tested): sell further out of the money. Every variant has used ~30-delta short strikes. v12 uses ~16-delta (roughly 1 standard deviation).",
+  "philosophy": "Rather than filtering WHICH days to trade, change WHERE on the curve we sell. 16-delta means smaller credit but a materially higher probability of profit and a wider buffer before the short strike is threatened -- a different risk/reward point on the same signal.",
+  "change": "SHORT_PUT_DELTA -0.30 -> -0.16 and SHORT_CALL_DELTA +0.30 -> +0.16. Everything else identical to v10 (200-day put gate, call momentum gate, POP floor, $1,000 cap, 50% target).",
+  "predictions": [
+    "win rate rises above v10's ~81%",
+    "credit per trade falls (less premium collected further OTM)",
+    "number of candidates passing the POP>=0.51 floor rises (further OTM = higher POP)",
+    "total PnL direction is genuinely uncertain: fewer/smaller wins vs fewer losses"
+  ],
+  "risk": "Further OTM collects less premium per unit of risk; if the loss frequency does not fall enough, return-on-risk gets worse."
+}

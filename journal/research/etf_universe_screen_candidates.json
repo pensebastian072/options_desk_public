@@ -1,0 +1,30 @@
+{
+  "id": "etf_universe_screen_candidates",
+  "created": "2026-07-23",
+  "purpose": "Research candidate pool (~100 large US-listed ETFs, bucketed by US-equity sector + asset class) to SCREEN for viability in the options engine. This is a discovery list, NOT a promoted universe. AUM ranks are approximate (verify) and are NOT the gate -- options liquidity is (see etf_universe_screen.md). Frozen v2/v3 (31 symbols) remain the operating universe until a screened subset is pre-registered.",
+  "note_aum": "Tickers chosen as well-known large-AUM ETFs per bucket. Several high-AUM names (VOO, VTI, BND, VEA, IEFA) are included ON PURPOSE as expected screen FAILURES -- high AUM, thin options -- to demonstrate AUM != option-tradable.",
+  "note_qlib": "Symbols not already in qlib's ~76-ETF model universe have no point-in-time lean; the screen flags them as 'needs qlib coverage' (add to qlib data_fetch) or excludes them.",
+  "buckets": {
+    "broad_us_equity": ["SPY", "VOO", "IVV", "VTI", "QQQ", "QQQM", "IWM", "DIA", "RSP", "MDY"],
+    "style_factor": ["IWF", "IWD", "VUG", "VTV", "MTUM", "QUAL", "USMV", "VLUE", "SPLV", "VIG", "VYM"],
+    "mid_small": ["IJH", "IJR", "IWR", "IWO", "IWN", "VB"],
+    "technology": ["XLK", "VGT", "SMH", "SOXX", "IGV", "XSD", "SKYY"],
+    "financials": ["XLF", "VFH", "KRE", "KBE", "IAI", "KIE"],
+    "health_care": ["XLV", "VHT", "IBB", "XBI", "IHI", "XPH"],
+    "consumer_discretionary": ["XLY", "VCR", "XRT", "ITB", "XHB"],
+    "consumer_staples": ["XLP", "VDC", "KXI"],
+    "industrials": ["XLI", "VIS", "ITA", "IYT", "JETS"],
+    "energy": ["XLE", "VDE", "XOP", "OIH", "AMLP", "ICLN"],
+    "materials": ["XLB", "VAW", "GDX", "GDXJ"],
+    "utilities": ["XLU", "VPU", "IDU"],
+    "real_estate": ["XLRE", "VNQ", "IYR", "SCHH"],
+    "communication": ["XLC", "VOX", "FCOM"],
+    "bonds": ["AGG", "BND", "TLT", "IEF", "SHY", "LQD", "HYG", "JNK", "TIP", "MUB", "EMB", "BNDX"],
+    "commodities": ["GLD", "IAU", "SLV", "USO", "UNG", "DBC"],
+    "international_dev": ["EFA", "VEA", "IEFA", "EWJ", "EWG", "EWU", "EWC"],
+    "international_em": ["EEM", "VWO", "IEMG", "FXI", "MCHI", "EWZ", "INDA", "EWY"]
+  },
+  "already_in_v2_universe": ["SPY", "QQQ", "IWM", "DIA", "TLT", "IEF", "AGG", "HYG", "LQD", "GLD", "SLV", "XLF", "XLE", "XLK", "XLV", "XLI", "XLY", "XLP", "XLU", "XLB", "XLRE", "XLC", "SMH", "KRE", "GDX", "XBI", "EEM", "EFA", "FXI", "EWZ", "VNQ"],
+  "expected_screen_fails_high_aum_thin_options": ["VOO", "VTI", "IVV", "VUG", "VTV", "VIG", "VYM", "BND", "VEA", "IEFA", "VWO", "IEMG", "BNDX", "QQQM", "IAU"],
+  "count_approx": 108
+}

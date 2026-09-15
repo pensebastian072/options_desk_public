@@ -1,0 +1,4 @@
+# options_desk — minimal deps. Signal/strategy/alert layer is stdlib-only
+# (Black-Scholes + urllib Telegram); Flask is only for the loopback UI.
+flask>=3.0
+pytest>=8.0

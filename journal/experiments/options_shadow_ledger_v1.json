@@ -1,0 +1,43 @@
+{
+  "experiment_id": "options_shadow_ledger_v1",
+  "registered_at": "2026-07-22T12:45:00-04:00",
+  "status": "measurement_schema_pre_registered_before_first_live_candidate",
+  "scope": {
+    "mode": "SHADOW advisory only",
+    "purpose": "Record executable-side entry economics, daily read-only liquidation marks, and immutable hold-to-expiry outcomes for every published option candidate.",
+    "not_in_scope": [
+      "broker accounts, positions, orders, fills, cancellations, or watchlists",
+      "automatic trade exits or order placement",
+      "new strategy, symbol, entry filter, sizing rule, or promotion rule"
+    ]
+  },
+  "canonical_measurement": {
+    "exit_policy": "hold_to_expiry",
+    "entry_credit": "For a short vertical: (short bid - long ask) * 100.",
+    "daily_exit_debit": "For a short vertical: (short ask - long bid) * 100.",
+    "daily_mark_pnl": "entry cash + natural closing cash - fixed round-trip costs.",
+    "expiry_spread_value": "(max(short strike - terminal spot, 0) - max(long strike - terminal spot, 0)) * 100.",
+    "expiry_pnl": "entry credit - expiry spread value - fixed round-trip costs.",
+    "return_on_risk": "P&L / entry max risk.",
+    "hit": "settled P&L > 0 after fixed round-trip costs",
+    "terminal_spot": "last completed local Qlib close on or before expiration",
+    "fixed_cost_per_leg_round_trip_usd": 2.0
+  },
+  "marking_rules": {
+    "frequency": "Once per weekday during the 09:35 America/New_York Codex workflow when open positions have stored Robinhood instrument IDs.",
+    "quote_source": "Robinhood get_option_quotes only; no account or order tools.",
+    "maximum_quote_age_minutes": 15,
+    "missing_stale_or_malformed_quote": "Reject that position mark; preserve the open position and prior marks.",
+    "effect": "Informational only; a mark never closes a position or changes candidate selection."
+  },
+  "audit_files": {
+    "open_positions": "journal/shadow_open.json",
+    "daily_marks": "journal/shadow_marks.jsonl",
+    "settled_positions": "journal/shadow_pnl.jsonl",
+    "mark_request": "journal/flags/shadow_mark_request.json"
+  },
+  "trial_accounting": {
+    "adds_strategy_trials": 0,
+    "reason": "This freezes observation and accounting mechanics without selecting an exit rule. Any take-profit, stop-loss, DTE exit, or parameter variant must be separately pre-registered and counted."
+  }
+}

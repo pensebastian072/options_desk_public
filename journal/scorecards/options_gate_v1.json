@@ -1,0 +1,316 @@
+{
+  "experiment_id": "options_gate_v1",
+  "spec_fingerprint": "a0b4af627cde30a2",
+  "generated_at": "2026-07-22T15:24:47.615075+00:00",
+  "status": "SHADOW",
+  "advisory_only": true,
+  "n_trials": 4,
+  "data": {
+    "qlib_csv_dir": "C:\\Users\\<you>\\qlib_lab\\csv",
+    "market_rows": 2512,
+    "market_start": "2016-07-25",
+    "market_end": "2026-07-22",
+    "macro_panel": {
+      "rows": 3651,
+      "start": "2016-07-23",
+      "end": "2026-07-21"
+    }
+  },
+  "signal_replay": {
+    "n_feature_rows": 2392,
+    "horizons": {
+      "5d": {
+        "n_predictions": 2046,
+        "folds": [
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2018-05-21",
+            "test_start": "2018-05-30",
+            "test_end": "2019-10-04",
+            "n_train": 146,
+            "n_test": 341
+          },
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2019-09-27",
+            "test_start": "2019-10-07",
+            "test_end": "2021-02-11",
+            "n_train": 341,
+            "n_test": 341
+          },
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2021-01-26",
+            "test_start": "2021-02-12",
+            "test_end": "2022-06-21",
+            "n_train": 524,
+            "n_test": 341
+          },
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2022-05-26",
+            "test_start": "2022-06-22",
+            "test_end": "2023-10-27",
+            "n_train": 671,
+            "n_test": 341
+          },
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2023-10-17",
+            "test_start": "2023-10-30",
+            "test_end": "2025-03-11",
+            "n_train": 896,
+            "n_test": 341
+          },
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2025-02-26",
+            "test_start": "2025-03-12",
+            "test_end": "2026-07-21",
+            "n_train": 1067,
+            "n_test": 341
+          }
+        ]
+      },
+      "21d": {
+        "n_predictions": 2030,
+        "folds": [
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2018-05-21",
+            "test_start": "2018-06-21",
+            "test_end": "2019-10-28",
+            "n_train": 172,
+            "n_test": 341
+          },
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2019-09-27",
+            "test_start": "2019-10-29",
+            "test_end": "2021-03-08",
+            "n_train": 371,
+            "n_test": 341
+          },
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2021-01-29",
+            "test_start": "2021-03-09",
+            "test_end": "2022-07-14",
+            "n_train": 571,
+            "n_test": 341
+          },
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2022-04-25",
+            "test_start": "2022-07-15",
+            "test_end": "2023-11-20",
+            "n_train": 720,
+            "n_test": 341
+          },
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2023-10-02",
+            "test_start": "2023-11-21",
+            "test_end": "2025-04-02",
+            "n_train": 953,
+            "n_test": 341
+          },
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2025-02-28",
+            "test_start": "2025-04-03",
+            "test_end": "2026-07-21",
+            "n_train": 1128,
+            "n_test": 325
+          }
+        ]
+      }
+    }
+  },
+  "assumptions": {
+    "experiment_id": "options_gate_v1",
+    "dte": [
+      30,
+      45,
+      60
+    ],
+    "risk_free": 0.04,
+    "short_put_delta": -0.3,
+    "short_call_delta": 0.2,
+    "put_spread_width": 5.0,
+    "call_spread_width": 5.0,
+    "vrp_sell_pct": 0.7,
+    "vrp_rich_pct": 0.6,
+    "magnitude_high_pct": 0.7,
+    "term_backwardation": 1.0,
+    "cost_per_leg_round_trip": 2.0,
+    "n_trials": 4,
+    "strategies": [
+      "short_put_csp",
+      "short_put_spread",
+      "jade_lizard",
+      "long_vol_straddle"
+    ]
+  },
+  "diagnostics": {
+    "signal_rows": 2512,
+    "eligible_rows": 2030,
+    "actions": {
+      "NO_TRADE": 1760,
+      "SELL_PREMIUM": 176,
+      "LONG_VOL": 94
+    },
+    "vix_iv_tilts": {
+      "short_vol": 560,
+      "long_vol": 275,
+      "neutral": 1193
+    },
+    "dropped_censored": 0,
+    "dropped_overlap": {
+      "short_put_spread": 152,
+      "short_put_csp": 152,
+      "long_vol_straddle": 78,
+      "jade_lizard": 72
+    }
+  },
+  "strategies": {
+    "short_put_csp": {
+      "n_trades": 24,
+      "stats": {
+        "mean_usd": 154.75,
+        "median_usd": 530.0,
+        "win_rate": 0.9167,
+        "total_usd": 3714.0,
+        "max_drawdown_usd": -6327.0,
+        "best_usd": 993.0,
+        "worst_usd": -6327.0
+      },
+      "gate": {
+        "passes": false,
+        "deflated_sharpe": {
+          "sr": 0.1085,
+          "ratio": -3.7297,
+          "prob": 0.0001,
+          "n": 24,
+          "n_trials": 4
+        },
+        "pbo": null,
+        "profit_factor": 1.5096,
+        "sharpe": 0.10846325529444814,
+        "n_trades": 24,
+        "thresholds": {
+          "deflated_sharpe_min": 0.0,
+          "pbo_max": 0.5
+        },
+        "reasons": [
+          "deflated_sharpe_ratio -3.7297 <= 0.0",
+          "insufficient PnL for PBO (need >=40 trades)"
+        ]
+      }
+    },
+    "short_put_spread": {
+      "n_trades": 24,
+      "stats": {
+        "mean_usd": 86.12,
+        "median_usd": 139.5,
+        "win_rate": 0.875,
+        "total_usd": 2067.0,
+        "max_drawdown_usd": -375.0,
+        "best_usd": 150.0,
+        "worst_usd": -375.0
+      },
+      "gate": {
+        "passes": false,
+        "deflated_sharpe": {
+          "sr": 0.5831,
+          "ratio": -1.3058,
+          "prob": 0.0958,
+          "n": 24,
+          "n_trials": 4
+        },
+        "pbo": null,
+        "profit_factor": 3.4904,
+        "sharpe": 0.5831384760493677,
+        "n_trades": 24,
+        "thresholds": {
+          "deflated_sharpe_min": 0.0,
+          "pbo_max": 0.5
+        },
+        "reasons": [
+          "deflated_sharpe_ratio -1.3058 <= 0.0",
+          "insufficient PnL for PBO (need >=40 trades)"
+        ]
+      }
+    },
+    "jade_lizard": {
+      "n_trades": 16,
+      "stats": {
+        "mean_usd": 245.31,
+        "median_usd": 642.0,
+        "win_rate": 0.9375,
+        "total_usd": 3925.0,
+        "max_drawdown_usd": -6248.0,
+        "best_usd": 1071.0,
+        "worst_usd": -6248.0
+      },
+      "gate": {
+        "passes": false,
+        "deflated_sharpe": {
+          "sr": 0.1412,
+          "ratio": -2.8667,
+          "prob": 0.0021,
+          "n": 16,
+          "n_trials": 4
+        },
+        "pbo": null,
+        "profit_factor": 1.6282,
+        "sharpe": 0.14123756514534205,
+        "n_trades": 16,
+        "thresholds": {
+          "deflated_sharpe_min": 0.0,
+          "pbo_max": 0.5
+        },
+        "reasons": [
+          "deflated_sharpe_ratio -2.8667 <= 0.0",
+          "insufficient PnL for PBO (need >=40 trades)"
+        ]
+      }
+    },
+    "long_vol_straddle": {
+      "n_trades": 16,
+      "stats": {
+        "mean_usd": -690.12,
+        "median_usd": -721.0,
+        "win_rate": 0.3125,
+        "total_usd": -11042.0,
+        "max_drawdown_usd": -11581.0,
+        "best_usd": 778.0,
+        "worst_usd": -2867.0
+      },
+      "gate": {
+        "passes": false,
+        "deflated_sharpe": {
+          "sr": -0.7364,
+          "ratio": -7.5922,
+          "prob": 0.0,
+          "n": 16,
+          "n_trials": 4
+        },
+        "pbo": null,
+        "profit_factor": 0.113,
+        "sharpe": -0.7364454376187496,
+        "n_trades": 16,
+        "thresholds": {
+          "deflated_sharpe_min": 0.0,
+          "pbo_max": 0.5
+        },
+        "reasons": [
+          "deflated_sharpe_ratio -7.5922 <= 0.0",
+          "insufficient PnL for PBO (need >=40 trades)"
+        ]
+      }
+    }
+  },
+  "cleared_strategies": [],
+  "note": "Canonical PBO/Deflated-Sharpe verdicts. A pass changes only the display badge; this desk remains paper/advisory and SHADOW."
+}

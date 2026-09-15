@@ -1,0 +1,29 @@
+{
+  "experiment_id": "options_etf_gate_v5",
+  "registered_at": "2026-07-23T15:00:00-04:00",
+  "status": "pre_registered_before_any_results",
+  "parent": "options_etf_gate_v4",
+  "objective": "Test whether a SLOWER trend gate -- do not sell put-side premium when the underlying is below its 200-day moving average (instead of the 50-day) -- catches more of the 2022 bear that v4's 50-day gate let back in on bear-market rallies, and what it costs.",
+  "motivation": "v4 (50-day gate) cut the 2022 loss only 39% (-$7025 -> -$4300) because bear-market rallies poke back above the fast 50-day, re-admitting put-side trades right before the downtrend resumes. A 200-day SMA stays below price for the whole bear, so the gate should hold defense through 2022. The expected cost: the 200-day is slow to turn back on after a bottom, so post-bear RECOVERY premium (e.g. 2020 rebound, 2023 H2, early recovery months) may be given up.",
+  "hypothesis": "The 200-day gate reduces the 2022 loss more than v4 did, at the cost of some recovery-year upside; net cluster-adjusted total is at least as good as v4 (+$3293).",
+  "change_from_v4": {
+    "only_change": "Trend gate measure = 200-day SMA instead of 50-day. Rule unchanged: below the average -> drop put_spread + iron_condor; call spreads still allowed. Everything else identical to v3/v4.",
+    "single_lever": "Only the SMA window changes, so the effect is attributable. A market-wide (index-level) kill switch is deliberately NOT added here -- that is a separate future variant."
+  },
+  "falsifiable_predictions": [
+    "2022 loss is smaller than v4's -$4300 (the slower gate holds defense through the bear)",
+    "at least one recovery window loses upside vs v4 (2020 and/or 2023 give back some gain because the 200-day re-admits put-side late)",
+    "cluster-adjusted total is >= v4 (+$3293); if it is worse, the slower gate over-defended and 50-day was better"
+  ],
+  "guardrails": {
+    "no_p_hacking": "Registered ONCE with the 200-day window fixed before running. If 200 is worse than 50, we report that; we do NOT then sweep windows to find the best -- a window sweep would be a single, separately pre-registered experiment that counts every window as a trial.",
+    "gate_unchanged": "Canonical thresholds fixed (PBO<0.5 AND DSR>0). Fewer trades raise the deflation bar.",
+    "same_deviations": "Proxied IV, constant-IV repricing, model credit carry over -- results remain an UPPER BOUND."
+  },
+  "trial_accounting": {
+    "n_trials": 93,
+    "previous_families": {"v1": 9, "v2": 40, "v3": 93, "v4": 93},
+    "reason": "same 31 symbols x 3 structures; the 200-day gate is a fixed rule."
+  },
+  "promotion": "No promotion. Informs which trend measure (if any) belongs in the live desk. SHADOW throughout."
+}

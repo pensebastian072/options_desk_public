@@ -1,0 +1,26 @@
+{
+  "experiment_id": "options_etf_gate_v14",
+  "registered_at": "2026-07-24T16:45:00-04:00",
+  "parent": "options_etf_gate_v10",
+  "status": "pre_registered_before_any_results",
+  "objective": "TIME-EXIT lever (never tested): close every position at 21 DTE if the 50% profit target has not already triggered -- the tastytrade/Sosnoff signature rule.",
+  "philosophy": "Sosnoff's most distinctive empirical rule. The last ~21 days of an option's life carry disproportionate GAMMA risk relative to remaining theta: a 2% adverse move can erase weeks of decay in a session. tastytrade reports (on 200k+ trades) roughly 15-20% better RISK-ADJUSTED returns from closing at 21 DTE versus holding to expiry. Our book enters at ~45 DTE and holds ~31 days on average, so it routinely sits INTO the high-gamma window -- exactly what this rule says to avoid.",
+  "external_basis": "tastytrade / tastylive published research and Sosnoff's standard mechanics: sell ~45 DTE, manage winners at 50% of credit, and manage remaining positions at 21 DTE. Our desk already implements 45 DTE entry and the 50% target; the 21-DTE management leg is the missing third.",
+  "change": "In simulate_exit, if the position is still open when time-to-expiry reaches 21 days, close it at the then-current modeled value. The 50% profit target still takes precedence when hit earlier. Everything else identical to v10.",
+  "predictions": [
+    "average holding days falls below v10's ~31",
+    "max drawdown improves vs v10's -$709 (gamma tail truncated)",
+    "2022 improves vs v10's -$2,880 (the bear's worst losses accrue late in the cycle)",
+    "total PnL may fall slightly -- the trade is giving up late theta to avoid late gamma; a lower total with a better drawdown/Sharpe is the expected, acceptable outcome"
+  ],
+  "guardrails": {
+    "no_p_hacking": "21 DTE is fixed a priori from published external research, NOT swept on our data. That makes it a stronger test than an internally-tuned threshold.",
+    "multiple_testing_disclosure": "This is the 14th variant on the same dataset; accumulated search is a real statistical cost. Confirm on real-option data before promoting.",
+    "gate_unchanged": "PBO<0.5 AND DSR>0 fixed.",
+    "same_deviations": "Proxied IV, constant-IV repricing, model credit -> UPPER BOUND. NOTE: our constant-IV repricing UNDERSTATES gamma/vol risk near expiry, so this test is biased AGAINST finding a 21-DTE benefit -- if it helps here, it would likely help more in reality."
+  },
+  "trial_accounting": {
+    "n_trials": 93
+  },
+  "promotion": "No promotion. SHADOW research."
+}

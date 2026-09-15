@@ -1,0 +1,27 @@
+{
+  "experiment_id": "options_etf_gate_v11",
+  "registered_at": "2026-07-24T16:30:00-04:00",
+  "parent": "options_etf_gate_v10",
+  "status": "pre_registered_before_any_results",
+  "guardrails": {
+    "no_p_hacking": "Each is registered ONCE with fixed parameters before running. Failures are reported and the variant dropped; no parameter sweeps.",
+    "multiple_testing_disclosure": "These are the 11th-13th variants on the same data. Accumulated searching is itself a statistical cost: the more variants tried, the more likely one looks good by luck. Treat any single winner with more suspicion than the first result, and confirm on real-option data before promoting anything.",
+    "gate_unchanged": "PBO<0.5 AND DSR>0 fixed.",
+    "same_deviations": "Proxied IV, constant-IV repricing, model credit -> UPPER BOUND."
+  },
+  "trial_accounting": {
+    "n_trials": 93,
+    "note": "same universe/structures; these are policy refinements, but see the multiple-testing disclosure."
+  },
+  "promotion": "No promotion. SHADOW research. v5 stays live; v10 remains the leading candidate unless one of these clearly beats it.",
+  "objective": "RISK MANAGEMENT lever (never tested): add a hard STOP-LOSS to the exit policy. Every variant so far has an upside target (50% of credit) but NO downside stop -- losers run to near-max width. Exit when the position's marked loss reaches 2x the credit received.",
+  "philosophy": "All prior variants tuned ENTRY selection. This tunes EXIT risk. The book's core defect is asymmetry: 81% win rate but avg loss 3-6x avg win (2022: avg win $58 vs avg loss $192). A stop truncates the left tail directly instead of trying to predict it.",
+  "change": "In simulate_exit, if the cost to close reaches 3x the entry credit (i.e. a realized loss of 2x credit), exit there. The 50% profit target and expiry fallback are unchanged.",
+  "predictions": [
+    "2022 loss shrinks materially vs v10's -$2,880 (the stop caps the bear tail)",
+    "overall win rate FALLS (stops convert would-be recoveries into realized losses)",
+    "cluster-adjusted max drawdown improves vs v10's -$709",
+    "total PnL may fall -- if it does, the stop bought drawdown reduction at a cost, and that is the honest tradeoff to weigh"
+  ],
+  "risk": "Premium-selling stops are known to whipsaw: a spread can breach a stop and still expire worthless. A worse total with a better drawdown is a plausible and acceptable finding."
+}

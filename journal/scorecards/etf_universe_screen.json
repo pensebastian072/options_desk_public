@@ -1,0 +1,433 @@
+{
+  "id": "etf_universe_screen",
+  "generated_at": "2026-07-25T03:32:31.890719+00:00",
+  "status": "SHADOW research; decorrelation selection only; no liquidity/PnL yet",
+  "window": [
+    "2019-07-18",
+    "2026-07-23"
+  ],
+  "base_symbols": 31,
+  "base_independent_entry_dates": 287,
+  "new_covered_candidates": 31,
+  "note": "Ranks NEW candidates by INDEPENDENT entry dates added over the current 31 (decorrelation), on full lean history. Liquidity (Alpaca) + real-option PnL come next; adopt nothing without pre-registration.",
+  "marginal_ranking": [
+    {
+      "symbol": "UNG",
+      "bucket": "commodities",
+      "own_entry_dates": 34,
+      "new_independent_dates": 11,
+      "jaccard_vs_base": 0.0772,
+      "decorrelation": 0.9228
+    },
+    {
+      "symbol": "XOP",
+      "bucket": "energy",
+      "own_entry_dates": 39,
+      "new_independent_dates": 8,
+      "jaccard_vs_base": 0.1051,
+      "decorrelation": 0.8949
+    },
+    {
+      "symbol": "IWO",
+      "bucket": "mid_small",
+      "own_entry_dates": 38,
+      "new_independent_dates": 7,
+      "jaccard_vs_base": 0.1054,
+      "decorrelation": 0.8946
+    },
+    {
+      "symbol": "EMB",
+      "bucket": "bonds",
+      "own_entry_dates": 34,
+      "new_independent_dates": 6,
+      "jaccard_vs_base": 0.0956,
+      "decorrelation": 0.9044
+    },
+    {
+      "symbol": "DBC",
+      "bucket": "commodities",
+      "own_entry_dates": 35,
+      "new_independent_dates": 6,
+      "jaccard_vs_base": 0.099,
+      "decorrelation": 0.901
+    },
+    {
+      "symbol": "INDA",
+      "bucket": "international_em",
+      "own_entry_dates": 39,
+      "new_independent_dates": 6,
+      "jaccard_vs_base": 0.1126,
+      "decorrelation": 0.8874
+    },
+    {
+      "symbol": "SHY",
+      "bucket": "bonds",
+      "own_entry_dates": 31,
+      "new_independent_dates": 5,
+      "jaccard_vs_base": 0.089,
+      "decorrelation": 0.911
+    },
+    {
+      "symbol": "XHB",
+      "bucket": "consumer_discretionary",
+      "own_entry_dates": 37,
+      "new_independent_dates": 5,
+      "jaccard_vs_base": 0.1096,
+      "decorrelation": 0.8904
+    },
+    {
+      "symbol": "VLUE",
+      "bucket": "style_factor",
+      "own_entry_dates": 38,
+      "new_independent_dates": 5,
+      "jaccard_vs_base": 0.113,
+      "decorrelation": 0.887
+    },
+    {
+      "symbol": "BNDX",
+      "bucket": "bonds",
+      "own_entry_dates": 30,
+      "new_independent_dates": 4,
+      "jaccard_vs_base": 0.0893,
+      "decorrelation": 0.9107
+    },
+    {
+      "symbol": "IWN",
+      "bucket": "mid_small",
+      "own_entry_dates": 35,
+      "new_independent_dates": 4,
+      "jaccard_vs_base": 0.1065,
+      "decorrelation": 0.8935
+    },
+    {
+      "symbol": "MUB",
+      "bucket": "bonds",
+      "own_entry_dates": 35,
+      "new_independent_dates": 4,
+      "jaccard_vs_base": 0.1065,
+      "decorrelation": 0.8935
+    },
+    {
+      "symbol": "GDXJ",
+      "bucket": "materials",
+      "own_entry_dates": 38,
+      "new_independent_dates": 4,
+      "jaccard_vs_base": 0.1168,
+      "decorrelation": 0.8832
+    },
+    {
+      "symbol": "XRT",
+      "bucket": "consumer_discretionary",
+      "own_entry_dates": 39,
+      "new_independent_dates": 4,
+      "jaccard_vs_base": 0.1203,
+      "decorrelation": 0.8797
+    },
+    {
+      "symbol": "IYT",
+      "bucket": "industrials",
+      "own_entry_dates": 41,
+      "new_independent_dates": 4,
+      "jaccard_vs_base": 0.1271,
+      "decorrelation": 0.8729
+    },
+    {
+      "symbol": "RSP",
+      "bucket": "broad_us_equity",
+      "own_entry_dates": 42,
+      "new_independent_dates": 4,
+      "jaccard_vs_base": 0.1306,
+      "decorrelation": 0.8694
+    },
+    {
+      "symbol": "EWY",
+      "bucket": "international_em",
+      "own_entry_dates": 36,
+      "new_independent_dates": 3,
+      "jaccard_vs_base": 0.1138,
+      "decorrelation": 0.8862
+    },
+    {
+      "symbol": "ITA",
+      "bucket": "industrials",
+      "own_entry_dates": 40,
+      "new_independent_dates": 3,
+      "jaccard_vs_base": 0.1276,
+      "decorrelation": 0.8724
+    },
+    {
+      "symbol": "IWF",
+      "bucket": "style_factor",
+      "own_entry_dates": 40,
+      "new_independent_dates": 3,
+      "jaccard_vs_base": 0.1276,
+      "decorrelation": 0.8724
+    },
+    {
+      "symbol": "IWD",
+      "bucket": "style_factor",
+      "own_entry_dates": 41,
+      "new_independent_dates": 3,
+      "jaccard_vs_base": 0.131,
+      "decorrelation": 0.869
+    },
+    {
+      "symbol": "TIP",
+      "bucket": "bonds",
+      "own_entry_dates": 36,
+      "new_independent_dates": 2,
+      "jaccard_vs_base": 0.1176,
+      "decorrelation": 0.8824
+    },
+    {
+      "symbol": "EWJ",
+      "bucket": "international_dev",
+      "own_entry_dates": 39,
+      "new_independent_dates": 2,
+      "jaccard_vs_base": 0.128,
+      "decorrelation": 0.872
+    },
+    {
+      "symbol": "QUAL",
+      "bucket": "style_factor",
+      "own_entry_dates": 40,
+      "new_independent_dates": 2,
+      "jaccard_vs_base": 0.1315,
+      "decorrelation": 0.8685
+    },
+    {
+      "symbol": "SPLV",
+      "bucket": "style_factor",
+      "own_entry_dates": 40,
+      "new_independent_dates": 2,
+      "jaccard_vs_base": 0.1315,
+      "decorrelation": 0.8685
+    },
+    {
+      "symbol": "EWC",
+      "bucket": "international_dev",
+      "own_entry_dates": 41,
+      "new_independent_dates": 2,
+      "jaccard_vs_base": 0.1349,
+      "decorrelation": 0.8651
+    },
+    {
+      "symbol": "MDY",
+      "bucket": "broad_us_equity",
+      "own_entry_dates": 42,
+      "new_independent_dates": 2,
+      "jaccard_vs_base": 0.1384,
+      "decorrelation": 0.8616
+    },
+    {
+      "symbol": "EWU",
+      "bucket": "international_dev",
+      "own_entry_dates": 39,
+      "new_independent_dates": 1,
+      "jaccard_vs_base": 0.1319,
+      "decorrelation": 0.8681
+    },
+    {
+      "symbol": "USMV",
+      "bucket": "style_factor",
+      "own_entry_dates": 39,
+      "new_independent_dates": 1,
+      "jaccard_vs_base": 0.1319,
+      "decorrelation": 0.8681
+    },
+    {
+      "symbol": "MTUM",
+      "bucket": "style_factor",
+      "own_entry_dates": 40,
+      "new_independent_dates": 1,
+      "jaccard_vs_base": 0.1354,
+      "decorrelation": 0.8646
+    },
+    {
+      "symbol": "VTI",
+      "bucket": "broad_us_equity",
+      "own_entry_dates": 40,
+      "new_independent_dates": 1,
+      "jaccard_vs_base": 0.1354,
+      "decorrelation": 0.8646
+    },
+    {
+      "symbol": "EWG",
+      "bucket": "international_dev",
+      "own_entry_dates": 41,
+      "new_independent_dates": 1,
+      "jaccard_vs_base": 0.1389,
+      "decorrelation": 0.8611
+    }
+  ],
+  "greedy_selection": [
+    {
+      "symbol": "UNG",
+      "bucket": "commodities",
+      "marginal_new_dates": 11,
+      "cumulative_independent_dates": 298
+    },
+    {
+      "symbol": "IWO",
+      "bucket": "mid_small",
+      "marginal_new_dates": 7,
+      "cumulative_independent_dates": 305
+    },
+    {
+      "symbol": "XOP",
+      "bucket": "energy",
+      "marginal_new_dates": 7,
+      "cumulative_independent_dates": 312
+    },
+    {
+      "symbol": "DBC",
+      "bucket": "commodities",
+      "marginal_new_dates": 6,
+      "cumulative_independent_dates": 318
+    },
+    {
+      "symbol": "VLUE",
+      "bucket": "style_factor",
+      "marginal_new_dates": 5,
+      "cumulative_independent_dates": 323
+    },
+    {
+      "symbol": "SHY",
+      "bucket": "bonds",
+      "marginal_new_dates": 5,
+      "cumulative_independent_dates": 328
+    },
+    {
+      "symbol": "INDA",
+      "bucket": "international_em",
+      "marginal_new_dates": 5,
+      "cumulative_independent_dates": 333
+    },
+    {
+      "symbol": "XRT",
+      "bucket": "consumer_discretionary",
+      "marginal_new_dates": 4,
+      "cumulative_independent_dates": 337
+    },
+    {
+      "symbol": "MUB",
+      "bucket": "bonds",
+      "marginal_new_dates": 4,
+      "cumulative_independent_dates": 341
+    },
+    {
+      "symbol": "BNDX",
+      "bucket": "bonds",
+      "marginal_new_dates": 4,
+      "cumulative_independent_dates": 345
+    },
+    {
+      "symbol": "RSP",
+      "bucket": "broad_us_equity",
+      "marginal_new_dates": 3,
+      "cumulative_independent_dates": 348
+    },
+    {
+      "symbol": "IWF",
+      "bucket": "style_factor",
+      "marginal_new_dates": 3,
+      "cumulative_independent_dates": 351
+    },
+    {
+      "symbol": "IWN",
+      "bucket": "mid_small",
+      "marginal_new_dates": 3,
+      "cumulative_independent_dates": 354
+    },
+    {
+      "symbol": "XHB",
+      "bucket": "consumer_discretionary",
+      "marginal_new_dates": 3,
+      "cumulative_independent_dates": 357
+    },
+    {
+      "symbol": "ITA",
+      "bucket": "industrials",
+      "marginal_new_dates": 3,
+      "cumulative_independent_dates": 360
+    },
+    {
+      "symbol": "GDXJ",
+      "bucket": "materials",
+      "marginal_new_dates": 3,
+      "cumulative_independent_dates": 363
+    },
+    {
+      "symbol": "EMB",
+      "bucket": "bonds",
+      "marginal_new_dates": 3,
+      "cumulative_independent_dates": 366
+    },
+    {
+      "symbol": "EWY",
+      "bucket": "international_em",
+      "marginal_new_dates": 3,
+      "cumulative_independent_dates": 369
+    },
+    {
+      "symbol": "MDY",
+      "bucket": "broad_us_equity",
+      "marginal_new_dates": 2,
+      "cumulative_independent_dates": 371
+    },
+    {
+      "symbol": "QUAL",
+      "bucket": "style_factor",
+      "marginal_new_dates": 2,
+      "cumulative_independent_dates": 373
+    },
+    {
+      "symbol": "EWJ",
+      "bucket": "international_dev",
+      "marginal_new_dates": 2,
+      "cumulative_independent_dates": 375
+    },
+    {
+      "symbol": "EWC",
+      "bucket": "international_dev",
+      "marginal_new_dates": 2,
+      "cumulative_independent_dates": 377
+    },
+    {
+      "symbol": "IWD",
+      "bucket": "style_factor",
+      "marginal_new_dates": 1,
+      "cumulative_independent_dates": 378
+    },
+    {
+      "symbol": "USMV",
+      "bucket": "style_factor",
+      "marginal_new_dates": 1,
+      "cumulative_independent_dates": 379
+    },
+    {
+      "symbol": "SPLV",
+      "bucket": "style_factor",
+      "marginal_new_dates": 1,
+      "cumulative_independent_dates": 380
+    },
+    {
+      "symbol": "IYT",
+      "bucket": "industrials",
+      "marginal_new_dates": 1,
+      "cumulative_independent_dates": 381
+    },
+    {
+      "symbol": "TIP",
+      "bucket": "bonds",
+      "marginal_new_dates": 1,
+      "cumulative_independent_dates": 382
+    },
+    {
+      "symbol": "EWG",
+      "bucket": "international_dev",
+      "marginal_new_dates": 1,
+      "cumulative_independent_dates": 383
+    }
+  ]
+}

@@ -1,0 +1,295 @@
+{
+  "experiment_id": "options_etf_gate_v14",
+  "trend_filter": true,
+  "trend_col": "sma200",
+  "market_overlay": false,
+  "no_call_spreads": false,
+  "symmetric_trend": false,
+  "momentum_gate": true,
+  "low_delta": false,
+  "no_upside_risk": false,
+  "stop_loss": false,
+  "manage_dte": true,
+  "generated_at": "2026-07-25T19:26:05.462616+00:00",
+  "status": "SHADOW",
+  "advisory_only": true,
+  "n_trials": 93,
+  "exit_policy": "50%_profit_target_then_expiry",
+  "data": {
+    "symbols_loaded": [
+      "AGG",
+      "DIA",
+      "EEM",
+      "EFA",
+      "EWZ",
+      "FXI",
+      "GDX",
+      "GLD",
+      "HYG",
+      "IEF",
+      "IWM",
+      "KRE",
+      "LQD",
+      "QQQ",
+      "SLV",
+      "SMH",
+      "SPY",
+      "TLT",
+      "VNQ",
+      "XBI",
+      "XLB",
+      "XLC",
+      "XLE",
+      "XLF",
+      "XLI",
+      "XLK",
+      "XLP",
+      "XLRE",
+      "XLU",
+      "XLV",
+      "XLY"
+    ],
+    "window": [
+      "2019-07-18",
+      "2026-07-23"
+    ],
+    "macro_panel": {
+      "rows": 3652,
+      "start": "2016-07-25",
+      "end": "2026-07-24"
+    }
+  },
+  "declared_deviations": "Proxied IV, constant-IV repricing, model credit -> UPPER BOUND. NOTE: our constant-IV repricing UNDERSTATES gamma/vol risk near expiry, so this test is biased AGAINST finding a 21-DTE benefit -- if it helps here, it would likely help more in reality.",
+  "minimum_pop": 0.51,
+  "per_trade_cap_usd": 1000,
+  "diagnostics": {
+    "regime_ok_days": 1146,
+    "entries": {
+      "AGG": 32,
+      "DIA": 16,
+      "EEM": 34,
+      "EFA": 41,
+      "EWZ": 33,
+      "FXI": 30,
+      "GDX": 34,
+      "GLD": 35,
+      "HYG": 32,
+      "IEF": 30,
+      "IWM": 29,
+      "KRE": 31,
+      "LQD": 32,
+      "QQQ": 23,
+      "SLV": 32,
+      "SMH": 33,
+      "SPY": 18,
+      "TLT": 26,
+      "VNQ": 29,
+      "XBI": 31,
+      "XLB": 40,
+      "XLC": 41,
+      "XLE": 33,
+      "XLF": 32,
+      "XLI": 37,
+      "XLK": 37,
+      "XLP": 39,
+      "XLRE": 32,
+      "XLU": 40,
+      "XLV": 38,
+      "XLY": 38
+    },
+    "by_structure": {
+      "etf_iron_condor_v1": 581,
+      "etf_short_call_spread_v1": 211,
+      "etf_short_put_spread_v1": 216
+    },
+    "dropped_pop_or_cap": 1830,
+    "dropped_censored": 55,
+    "dropped_no_structure": 0,
+    "dropped_trend": 3342,
+    "dropped_market": 0,
+    "exits": {
+      "dte21": 760,
+      "target": 248
+    }
+  },
+  "per_year": {
+    "2019": {
+      "n": 57,
+      "win_rate": 0.8246,
+      "total_pnl_usd": 1090.73,
+      "profit_factor": 3.4334,
+      "avg_holding_days": 21.8,
+      "pct_exited_at_target": 0.193
+    },
+    "2020": {
+      "n": 141,
+      "win_rate": 0.6596,
+      "total_pnl_usd": 570.57,
+      "profit_factor": 1.1854,
+      "avg_holding_days": 23.1,
+      "pct_exited_at_target": 0.2057
+    },
+    "2021": {
+      "n": 146,
+      "win_rate": 0.774,
+      "total_pnl_usd": 2654.88,
+      "profit_factor": 3.2696,
+      "avg_holding_days": 24.1,
+      "pct_exited_at_target": 0.2055
+    },
+    "2022": {
+      "n": 97,
+      "win_rate": 0.5361,
+      "total_pnl_usd": -1433.82,
+      "profit_factor": 0.4946,
+      "avg_holding_days": 18.5,
+      "pct_exited_at_target": 0.3299
+    },
+    "2023": {
+      "n": 173,
+      "win_rate": 0.6243,
+      "total_pnl_usd": -459.93,
+      "profit_factor": 0.8871,
+      "avg_holding_days": 21.7,
+      "pct_exited_at_target": 0.2659
+    },
+    "2024": {
+      "n": 176,
+      "win_rate": 0.6932,
+      "total_pnl_usd": 1925.6,
+      "profit_factor": 1.7811,
+      "avg_holding_days": 24.3,
+      "pct_exited_at_target": 0.2273
+    },
+    "2025": {
+      "n": 156,
+      "win_rate": 0.7115,
+      "total_pnl_usd": 1827.62,
+      "profit_factor": 2.0747,
+      "avg_holding_days": 20.6,
+      "pct_exited_at_target": 0.2564
+    },
+    "2026": {
+      "n": 62,
+      "win_rate": 0.6935,
+      "total_pnl_usd": 1159.29,
+      "profit_factor": 2.9288,
+      "avg_holding_days": 21.2,
+      "pct_exited_at_target": 0.3226
+    }
+  },
+  "views": {
+    "pooled": {
+      "n_trades": 1008,
+      "stats": {
+        "mean_usd": 7.28,
+        "median_usd": 13.57,
+        "win_rate": 0.6835,
+        "total_usd": 7334.94,
+        "max_drawdown_usd": -805.79,
+        "best_usd": 113.07,
+        "worst_usd": -301.51
+      },
+      "gate": {
+        "passes": false,
+        "deflated_sharpe": {
+          "sr": 0.1291,
+          "ratio": -67.204,
+          "prob": 0.0,
+          "n": 1008,
+          "n_trials": 93
+        },
+        "pbo": 0.0,
+        "profit_factor": 1.4479,
+        "sharpe": 0.12911213405492467,
+        "n_trades": 1008,
+        "thresholds": {
+          "deflated_sharpe_min": 0.0,
+          "pbo_max": 0.5
+        },
+        "reasons": [
+          "deflated_sharpe_ratio -67.204 <= 0.0"
+        ]
+      },
+      "warning": "naive; same-date correlated entries counted as independent"
+    },
+    "cluster_adjusted": {
+      "n_trades": 385,
+      "stats": {
+        "mean_usd": 5.21,
+        "median_usd": 12.55,
+        "win_rate": 0.6753,
+        "total_usd": 2005.02,
+        "max_drawdown_usd": -602.68,
+        "best_usd": 100.42,
+        "worst_usd": -284.3
+      },
+      "gate": {
+        "passes": false,
+        "deflated_sharpe": {
+          "sr": 0.1041,
+          "ratio": -42.7033,
+          "prob": 0.0,
+          "n": 385,
+          "n_trials": 93
+        },
+        "pbo": 0.0992,
+        "profit_factor": 1.3476,
+        "sharpe": 0.10408840067238347,
+        "n_trades": 385,
+        "thresholds": {
+          "deflated_sharpe_min": 0.0,
+          "pbo_max": 0.5
+        },
+        "reasons": [
+          "deflated_sharpe_ratio -42.7033 <= 0.0"
+        ]
+      },
+      "note": "HEADLINE \u2014 one observation per entry date; the only view a promotion decision may use"
+    },
+    "spy_only": {
+      "n_trades": 18,
+      "stats": {
+        "mean_usd": -6.43,
+        "median_usd": 45.12,
+        "win_rate": 0.6111,
+        "total_usd": -115.73,
+        "max_drawdown_usd": -377.85,
+        "best_usd": 77.52,
+        "worst_usd": -206.64
+      },
+      "gate": {
+        "passes": false,
+        "deflated_sharpe": {
+          "sr": -0.0651,
+          "ratio": -10.9109,
+          "prob": 0.0,
+          "n": 18,
+          "n_trials": 93
+        },
+        "pbo": null,
+        "profit_factor": 0.8521,
+        "sharpe": -0.06509248124898467,
+        "n_trades": 18,
+        "thresholds": {
+          "deflated_sharpe_min": 0.0,
+          "pbo_max": 0.5
+        },
+        "reasons": [
+          "deflated_sharpe_ratio -10.9109 <= 0.0",
+          "insufficient PnL for PBO (need >=40 trades)"
+        ]
+      },
+      "note": "directly comparable to options_gate_v1"
+    }
+  },
+  "hold_to_expiry_comparison": {
+    "cluster_adjusted_n": 381,
+    "cluster_adjusted_total_usd": 10825.72,
+    "note": "same entries, settled at expiry instead of the 50% target"
+  },
+  "headline_view": "cluster_adjusted",
+  "pbo_available": true,
+  "cleared": false,
+  "note": "Proxied IV, constant-IV repricing, model credit -> an UPPER BOUND on the live edge. A pass changes only a display badge; the desk stays SHADOW."
+}

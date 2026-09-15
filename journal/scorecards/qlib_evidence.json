@@ -1,0 +1,121 @@
+{
+  "generated_at": "2026-07-23T15:04:40.259231+00:00",
+  "question": "Does the Qlib per-asset filter add independent evidence?",
+  "score_export": {
+    "path": "C:\\Users\\<you>\\qlib_lab\\journal\\exports\\qlib_score_history.parquet",
+    "rows": 133986,
+    "window": [
+      "2019-07-18",
+      "2026-07-23"
+    ]
+  },
+  "spec": "options_etf_universe_v2",
+  "regime_ok_dates_in_window": 420,
+  "filter": {
+    "lean": 1,
+    "minimum_conviction": 0.7
+  },
+  "discrimination": {
+    "regime_dates_with_scores": 420,
+    "universe_size": 31,
+    "mean_admitted_per_date": 2.964,
+    "max_admitted_on_a_date": 6,
+    "dates_with_zero_admitted": 14,
+    "admitted_fraction_of_universe": 0.0956
+  },
+  "baseline_global_only": {
+    "n_entries": 1116,
+    "independent_entry_dates": 36,
+    "symbols_that_traded": 31,
+    "mean_symbols_per_entry_date": 31.0,
+    "per_symbol_entry_counts": {
+      "AGG": 36,
+      "DIA": 36,
+      "EEM": 36,
+      "EFA": 36,
+      "EWZ": 36,
+      "FXI": 36,
+      "GDX": 36,
+      "GLD": 36,
+      "HYG": 36,
+      "IEF": 36,
+      "IWM": 36,
+      "KRE": 36,
+      "LQD": 36,
+      "QQQ": 36,
+      "SLV": 36,
+      "SMH": 36,
+      "SPY": 36,
+      "TLT": 36,
+      "VNQ": 36,
+      "XBI": 36,
+      "XLB": 36,
+      "XLC": 36,
+      "XLE": 36,
+      "XLF": 36,
+      "XLI": 36,
+      "XLK": 36,
+      "XLP": 36,
+      "XLRE": 36,
+      "XLU": 36,
+      "XLV": 36,
+      "XLY": 36
+    },
+    "overlap": {
+      "pairs": 465,
+      "mean_jaccard": 1.0,
+      "max_jaccard": 1.0
+    }
+  },
+  "qlib_filtered": {
+    "n_entries": 307,
+    "independent_entry_dates": 192,
+    "symbols_that_traded": 30,
+    "mean_symbols_per_entry_date": 1.599,
+    "per_symbol_entry_counts": {
+      "DIA": 2,
+      "EEM": 9,
+      "EFA": 6,
+      "EWZ": 20,
+      "FXI": 14,
+      "GDX": 21,
+      "GLD": 12,
+      "HYG": 1,
+      "IEF": 2,
+      "IWM": 11,
+      "KRE": 15,
+      "LQD": 2,
+      "QQQ": 10,
+      "SLV": 23,
+      "SMH": 20,
+      "SPY": 4,
+      "TLT": 9,
+      "VNQ": 8,
+      "XBI": 17,
+      "XLB": 8,
+      "XLC": 4,
+      "XLE": 17,
+      "XLF": 11,
+      "XLI": 9,
+      "XLK": 16,
+      "XLP": 2,
+      "XLRE": 10,
+      "XLU": 11,
+      "XLV": 4,
+      "XLY": 9
+    },
+    "overlap": {
+      "pairs": 435,
+      "mean_jaccard": 0.0168,
+      "max_jaccard": 0.2857
+    }
+  },
+  "verdict": {
+    "independent_dates_baseline": 36,
+    "independent_dates_filtered": 192,
+    "delta": 156,
+    "pbo_floor": 40,
+    "adds_independent_evidence": true,
+    "note": "A filter only adds evidence if it DECORRELATES entry timing, raising the count of independent entry dates. Fewer trades at the same dates is not evidence. This is a diagnostic, not a promotion."
+  }
+}

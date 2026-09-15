@@ -1,0 +1,121 @@
+{
+  "experiment_id": "options_etf_gate_v7",
+  "generated_at": "2026-07-24T13:55:01.079339+00:00",
+  "status": "SHADOW",
+  "advisory_only": true,
+  "design": "v5 short-premium book + monthly long SPY put (~7% OTM, ~45 DTE) tail hedge",
+  "per_year": {
+    "2019": {
+      "book_pnl_usd": -228.63,
+      "hedge_pnl_usd": -923.32,
+      "net_pnl_usd": -1151.95,
+      "hedge_paid_months": 0
+    },
+    "2020": {
+      "book_pnl_usd": 3397.03,
+      "hedge_pnl_usd": 2111.17,
+      "net_pnl_usd": 5508.2,
+      "hedge_paid_months": 2
+    },
+    "2021": {
+      "book_pnl_usd": 4494.38,
+      "hedge_pnl_usd": -3172.2,
+      "net_pnl_usd": 1322.18,
+      "hedge_paid_months": 0
+    },
+    "2022": {
+      "book_pnl_usd": -2802.05,
+      "hedge_pnl_usd": 1355.5,
+      "net_pnl_usd": -1446.55,
+      "hedge_paid_months": 3
+    },
+    "2023": {
+      "book_pnl_usd": 1102.45,
+      "hedge_pnl_usd": -1394.01,
+      "net_pnl_usd": -291.56,
+      "hedge_paid_months": 0
+    },
+    "2024": {
+      "book_pnl_usd": 2134.05,
+      "hedge_pnl_usd": -1599.45,
+      "net_pnl_usd": 534.6,
+      "hedge_paid_months": 0
+    },
+    "2025": {
+      "book_pnl_usd": 2074.81,
+      "hedge_pnl_usd": -1540.92,
+      "net_pnl_usd": 533.89,
+      "hedge_paid_months": 1
+    },
+    "2026": {
+      "book_pnl_usd": 2178.16,
+      "hedge_pnl_usd": -1583.4,
+      "net_pnl_usd": 594.76,
+      "hedge_paid_months": 0
+    }
+  },
+  "totals": {
+    "book_pnl_usd": 12350.2,
+    "hedge_pnl_usd": -6746.63,
+    "net_pnl_usd": 5603.57
+  },
+  "hedge_detail": {
+    "2019": {
+      "n": 12,
+      "cost_usd": 899.32,
+      "payoff_usd": 0.0,
+      "pnl_usd": -923.32,
+      "paid_months": 0
+    },
+    "2020": {
+      "n": 12,
+      "cost_usd": 5120.83,
+      "payoff_usd": 7256.0,
+      "pnl_usd": 2111.17,
+      "paid_months": 2
+    },
+    "2021": {
+      "n": 12,
+      "cost_usd": 3148.2,
+      "payoff_usd": 0.0,
+      "pnl_usd": -3172.2,
+      "paid_months": 0
+    },
+    "2022": {
+      "n": 12,
+      "cost_usd": 4648.51,
+      "payoff_usd": 6028.0,
+      "pnl_usd": 1355.5,
+      "paid_months": 3
+    },
+    "2023": {
+      "n": 12,
+      "cost_usd": 1370.01,
+      "payoff_usd": 0.0,
+      "pnl_usd": -1394.01,
+      "paid_months": 0
+    },
+    "2024": {
+      "n": 12,
+      "cost_usd": 1575.45,
+      "payoff_usd": 0.0,
+      "pnl_usd": -1599.45,
+      "paid_months": 0
+    },
+    "2025": {
+      "n": 12,
+      "cost_usd": 3175.92,
+      "payoff_usd": 1659.0,
+      "pnl_usd": -1540.92,
+      "paid_months": 1
+    },
+    "2026": {
+      "n": 6,
+      "cost_usd": 1571.4,
+      "payoff_usd": 0.0,
+      "pnl_usd": -1583.4,
+      "paid_months": 0
+    }
+  },
+  "note": "Pooled annual view. The hedge is a portfolio overlay, not a gate trial; v5's per-trade gate verdict (DSR<0) is unchanged. Model-priced -> upper bound."
+}

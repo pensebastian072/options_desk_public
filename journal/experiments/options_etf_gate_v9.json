@@ -1,0 +1,29 @@
+{
+  "experiment_id": "options_etf_gate_v9",
+  "registered_at": "2026-07-24T15:00:00-04:00",
+  "parent": "options_etf_gate_v5",
+  "status": "pre_registered_before_any_results",
+  "objective": "Fix the call spread rather than delete it (v8 deleted it and lost bear protection). Apply the SYMMETRIC trend gate: v5 already refuses to sell PUT-side premium when a symbol is below its 200-day SMA (downtrend); v9 additionally refuses to sell CALL-side premium when a symbol is ABOVE its 200-day SMA (uptrend). Never sell premium in the direction the trend is running.",
+  "diagnosis_that_motivated_it": {
+    "finding": "In v5, call spreads lost -$913 over 7 years with an 85% win rate: avg win $35 vs avg loss $217 (6x). The losses concentrated in the highest-momentum names of the era -- SMH -$629, GLD -$597, XLY -$419, QQQ -$266, XBI -$227 -- while slow/defensive names (SPY +$417, TLT +$339, LQD +$202, XLV +$210) were fine.",
+    "interpretation": "Short calls were repeatedly run over by sustained uptrends (AI/semis, the gold bull, Nasdaq). This is the exact mirror of the 2022 put-side failure that motivated v4/v5.",
+    "mechanism": "Selling premium against a durable trend is the losing side of a trend; the v5 gate already encodes this for puts. v9 simply completes the symmetry -- it is not a new idea, it is the missing half of an existing validated one."
+  },
+  "change_from_v5": {
+    "only_change": "CALL_SPREAD additionally requires spot <= its 200-day SMA (symbol NOT in an uptrend). Put spreads and iron condors keep the existing v5 put-side gate (spot >= SMA200). Everything else identical.",
+    "note_on_condors": "The iron condor keeps only the put-side gate in this variant so the change is attributable to the call-spread rule alone. A condor-specific dual gate would be a separate experiment."
+  },
+  "falsifiable_predictions": [
+    "call-spread PnL improves from -$913 toward or above breakeven",
+    "cluster-adjusted total improves vs v5 (+$5,111)",
+    "2022 is NOT materially worse than v5's -$2,802 (unlike v8, the bear-side structure is retained, just better timed)",
+    "call-spread trade count falls substantially (most of the sample was an uptrend)"
+  ],
+  "guardrails": {
+    "no_p_hacking": "Registered ONCE; the rule (200-day, symmetric) is fixed and inherited from the already-validated v5 put-side gate, not swept. If it fails we keep v5 and report it.",
+    "gate_unchanged": "PBO<0.5 AND DSR>0 fixed. Fewer trades raise the deflation bar.",
+    "same_deviations": "Proxied IV, constant-IV repricing, model credit -> UPPER BOUND."
+  },
+  "trial_accounting": {"n_trials": 93, "note": "same universe/structures; a gate refinement, no new search breadth."},
+  "promotion": "No promotion. SHADOW. Informs whether the live desk should gate call spreads on trend."
+}

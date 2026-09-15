@@ -1,0 +1,30 @@
+{
+  "experiment_id": "options_etf_gate_v7",
+  "registered_at": "2026-07-23T16:00:00-04:00",
+  "status": "pre_registered_before_any_results",
+  "parent": "options_etf_gate_v5",
+  "objective": "Test whether adding a rolling long-tail HEDGE (a monthly long SPY put) on top of the v5 short-premium book reduces the residual 2022 bear loss, and at what carry cost in calm years. v5 is the champion; this asks whether the hedge is worth it.",
+  "design_note": "This is a PORTFOLIO RISK OVERLAY, not a new set of gate trials. The v5 book's per-trade gate is unchanged. The hedge is reported at the annual (pooled) level: book PnL + hedge PnL = net. No promotion claim rides on the hedge.",
+  "hedge": {
+    "underlying": "SPY",
+    "cadence": "open one long put on the first trading day of each month; hold to expiry; roll monthly",
+    "strike": "nearest listed strike to 7% out-of-the-money (round(spot * 0.93))",
+    "dte": "nearest monthly third-Friday to 45 DTE within 30-60",
+    "pricing": "Black-Scholes with sigma = VIX/100 at entry, r = 4% (VIX is real, so the hedge gets expensive exactly when it is most wanted)",
+    "settlement": "intrinsic max(strike - S_expiry, 0) * 100 at expiry; cost = entry premium * 100 + fixed per-leg cost",
+    "size": "one contract per month (comparable to the desk's 1-lot candidates)"
+  },
+  "hypothesis": "The hedge bleeds a small, roughly constant carry in calm years (2019-2021, 2024-2026) and pays enough in 2022 to cut that year's loss, improving worst-year drawdown even if it lowers total return.",
+  "known_risk_to_the_thesis": "2022 was a GRINDING bear (slow bleed), not a gap crash like March 2020. A 45-DTE 7%-OTM put may expire worthless repeatedly during a grind and only pay in the sharp legs. It is entirely possible the hedge helps 2020 (a real crash) but NOT 2022 -- that would be an honest and useful finding.",
+  "falsifiable_predictions": [
+    "2022 net loss (book + hedge) is smaller than v5's -$2802",
+    "every calm year is worse by the hedge carry (a small negative drag)",
+    "the hedge's own total PnL over 2019-2026 is negative (tail hedges usually have negative expected value; they buy drawdown reduction, not return)"
+  ],
+  "guardrails": {
+    "no_p_hacking": "Registered ONCE with the strike (7% OTM), DTE (45), cadence (monthly), and size (1 lot) fixed before running. If the hedge does not help, we report it and keep v5 unhedged. We do not sweep strike/DTE/size to find a version that pays.",
+    "gate_unchanged": "The v5 book gate is untouched; the hedge is an overlay, not a gate trial.",
+    "same_deviations": "Proxied/model pricing carries over; the hedge is BS-priced on the SPY path -> an approximation, not real fills."
+  },
+  "promotion": "No promotion. Determines whether a tail hedge is worth proposing alongside a future live desk. SHADOW throughout."
+}

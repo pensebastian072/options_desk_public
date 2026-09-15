@@ -1,0 +1,50 @@
+{
+  "experiment_id": "options_gate_v1",
+  "registered_at": "2026-07-22T00:00:00-04:00",
+  "status": "pre_registered_before_results",
+  "objective": "Evaluate the production options_desk selector and four priced option structures with non-overlapping, point-in-time parametric trades.",
+  "hypotheses": {
+    "short_put_csp": "Rich variance risk premium during calm, low-magnitude regimes produces positive net expiry PnL for a 30-delta cash-secured put.",
+    "short_put_spread": "The same premium-selling regime produces positive net expiry PnL for the fixed-width defined-risk put spread.",
+    "jade_lizard": "The same premium-selling regime produces positive net expiry PnL when the no-upside-risk credit invariant is feasible.",
+    "long_vol_straddle": "An out-of-sample surprise-eruption prediction from calm, when VRP is not rich, produces positive net expiry PnL for an ATM straddle."
+  },
+  "production_policy": {
+    "underlying": "SPY",
+    "dte_min": 30,
+    "dte_target": 45,
+    "dte_max": 60,
+    "expiry": "nearest monthly third Friday in the production window",
+    "entry_information": "prior-session SPY/VIX and cross-asset data available before the following session open",
+    "selector": "desk.strategies.select with the production VRP, magnitude, calm, eruption, and term-structure rules",
+    "overlap": "one open trade at a time per strategy; the next entry must follow the prior expiry",
+    "contract_multiplier": 100,
+    "risk_free_rate": 0.04,
+    "entry_price": "production Black-Scholes estimate using VIX/100",
+    "exit_price": "intrinsic value at expiry using unadjusted SPY close; preceding session on market holiday"
+  },
+  "signal_replay": {
+    "vrp_and_magnitude": "trailing-only calculations from qlib_lab CSV data",
+    "surprise_model": "macro_gpu_lab feature and label functions with expanding walk-forward predictions and a horizon-length label gap",
+    "surprise_horizons_days": [5, 21],
+    "missing_data": "date is ineligible; never impute a trade signal"
+  },
+  "costs": {
+    "round_trip_usd_per_leg": 2.0,
+    "short_put_csp_usd": 2.0,
+    "short_put_spread_usd": 4.0,
+    "jade_lizard_usd": 6.0,
+    "long_vol_straddle_usd": 4.0
+  },
+  "gate": {
+    "implementation": "macro_gpu_lab.validate.evaluate_gate",
+    "n_trials": 4,
+    "pass_rule": "Deflated Sharpe ratio > 0 and PBO < 0.5 for the production-expiry PnL series",
+    "minimum_effective_sample": "Canonical gate requirements apply; fewer than 40 completed trades cannot clear PBO.",
+    "promotion_effect": "Display-only per-strategy gate badge. The desk remains advisory and SHADOW; no execution or sizing change."
+  },
+  "non_gate_diagnostics": {
+    "vix_iv_pairs": "Report selector tilt counts only because this candidate has no defined legs or standalone payoff.",
+    "entry_ledger": "Persist dates, structures, premiums, terminal values, costs, and PnL for auditability."
+  }
+}

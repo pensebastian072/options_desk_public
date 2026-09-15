@@ -1,0 +1,27 @@
+{
+  "experiment_id": "options_etf_gate_v13",
+  "registered_at": "2026-07-24T16:30:00-04:00",
+  "parent": "options_etf_gate_v10",
+  "status": "pre_registered_before_any_results",
+  "guardrails": {
+    "no_p_hacking": "Each is registered ONCE with fixed parameters before running. Failures are reported and the variant dropped; no parameter sweeps.",
+    "multiple_testing_disclosure": "These are the 11th-13th variants on the same data. Accumulated searching is itself a statistical cost: the more variants tried, the more likely one looks good by luck. Treat any single winner with more suspicion than the first result, and confirm on real-option data before promoting anything.",
+    "gate_unchanged": "PBO<0.5 AND DSR>0 fixed.",
+    "same_deviations": "Proxied IV, constant-IV repricing, model credit -> UPPER BOUND."
+  },
+  "trial_accounting": {
+    "n_trials": 93,
+    "note": "same universe/structures; these are policy refinements, but see the multiple-testing disclosure."
+  },
+  "promotion": "No promotion. SHADOW research. v5 stays live; v10 remains the leading candidate unless one of these clearly beats it.",
+  "objective": "STRUCTURE DESIGN lever (never tested in the ETF lane): replace the iron condor with a NO-UPSIDE-RISK condor (jade-lizard principle) for neutral leans -- require total credit >= the call-side width so the call wing is fully financed and the structure cannot lose to the upside.",
+  "philosophy": "Every failure mode we have found on the call side is upside risk in a market with positive drift (calls -$913 in v5; SMH/GLD/QQQ ran through short strikes). Instead of predicting when NOT to sell calls (v9 failed, v10 half-worked), remove upside risk BY CONSTRUCTION. The SPY lane already uses this invariant for its jade lizard; the ETF lane never adopted it.",
+  "change": "For neutral (iron condor) entries, require total_credit >= call_width; if the structure cannot meet it, skip the trade. Defined risk on the put side is retained (the $1,000 cap forbids a naked put). Directional structures unchanged from v10.",
+  "predictions": [
+    "condor trade count falls (many will not clear the financing requirement)",
+    "the surviving condors have NO upside losses -- all condor losses are downside",
+    "2022 (a downside year) is not improved; the benefit should appear in strong up-years (2021, 2024)",
+    "total PnL direction uncertain: fewer trades, but no upside tail"
+  ],
+  "risk": "Requiring credit >= call width is restrictive; if too few condors qualify the book loses its main profit engine (condors were +$9,729 of v5's PnL)."
+}

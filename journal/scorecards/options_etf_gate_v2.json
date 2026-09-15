@@ -1,0 +1,372 @@
+{
+  "experiment_id": "options_etf_gate_v2",
+  "generated_at": "2026-07-23T15:06:59.040251+00:00",
+  "status": "SHADOW",
+  "advisory_only": true,
+  "n_trials": 40,
+  "data": {
+    "qlib_csv_dir": "C:\\Users\\<you>\\qlib_lab\\csv",
+    "symbols_loaded": [
+      "AGG",
+      "DIA",
+      "EEM",
+      "EFA",
+      "EWZ",
+      "FXI",
+      "GDX",
+      "GLD",
+      "HYG",
+      "IEF",
+      "IWM",
+      "KRE",
+      "LQD",
+      "QQQ",
+      "SLV",
+      "SMH",
+      "SPY",
+      "TLT",
+      "VNQ",
+      "XBI",
+      "XLB",
+      "XLC",
+      "XLE",
+      "XLF",
+      "XLI",
+      "XLK",
+      "XLP",
+      "XLRE",
+      "XLU",
+      "XLV",
+      "XLY"
+    ],
+    "window": [
+      "2019-07-18",
+      "2026-07-23"
+    ],
+    "macro_panel": {
+      "rows": 3651,
+      "start": "2016-07-24",
+      "end": "2026-07-22"
+    }
+  },
+  "signal_replay": {
+    "n_feature_rows": 2393,
+    "horizons": {
+      "5d": {
+        "n_predictions": 2046,
+        "folds": [
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2018-05-21",
+            "test_start": "2018-05-30",
+            "test_end": "2019-10-04",
+            "n_train": 146,
+            "n_test": 341
+          },
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2019-09-27",
+            "test_start": "2019-10-07",
+            "test_end": "2021-02-11",
+            "n_train": 341,
+            "n_test": 341
+          },
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2021-01-26",
+            "test_start": "2021-02-12",
+            "test_end": "2022-06-21",
+            "n_train": 524,
+            "n_test": 341
+          },
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2022-05-26",
+            "test_start": "2022-06-22",
+            "test_end": "2023-10-27",
+            "n_train": 671,
+            "n_test": 341
+          },
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2023-10-17",
+            "test_start": "2023-10-30",
+            "test_end": "2025-03-11",
+            "n_train": 896,
+            "n_test": 341
+          },
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2025-02-26",
+            "test_start": "2025-03-12",
+            "test_end": "2026-07-21",
+            "n_train": 1067,
+            "n_test": 341
+          }
+        ]
+      },
+      "21d": {
+        "n_predictions": 2031,
+        "folds": [
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2018-05-21",
+            "test_start": "2018-06-21",
+            "test_end": "2019-10-28",
+            "n_train": 172,
+            "n_test": 341
+          },
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2019-09-27",
+            "test_start": "2019-10-29",
+            "test_end": "2021-03-08",
+            "n_train": 371,
+            "n_test": 341
+          },
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2021-01-29",
+            "test_start": "2021-03-09",
+            "test_end": "2022-07-14",
+            "n_train": 571,
+            "n_test": 341
+          },
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2022-04-25",
+            "test_start": "2022-07-15",
+            "test_end": "2023-11-20",
+            "n_train": 720,
+            "n_test": 341
+          },
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2023-10-02",
+            "test_start": "2023-11-21",
+            "test_end": "2025-04-02",
+            "n_train": 953,
+            "n_test": 341
+          },
+          {
+            "train_start": "2017-01-12",
+            "train_end": "2025-02-28",
+            "test_start": "2025-04-03",
+            "test_end": "2026-07-22",
+            "n_train": 1128,
+            "n_test": 326
+          }
+        ]
+      }
+    }
+  },
+  "qlib_filter": {
+    "source": "qlib_lab/journal/exports/qlib_score_history.parquet",
+    "lean": 1,
+    "minimum_conviction": 0.7,
+    "semantics": "lean is a CROSS-SECTIONAL RANK over the 76-asset model universe: top-TOPK(8) score +1. Selectivity is structural, not a tuned threshold.",
+    "no_lookahead": "refit every 126 sessions on labels fully realized before the refit date (cutoff = dates[i - horizon]); models applied forward only"
+  },
+  "carried_over_deviations": [
+    {
+      "deviation": "implied volatility is proxied, not observed",
+      "method": "entry IV = RV20(symbol) * premium_factor, premium_factor = (VIX/100)/RV20(SPY)",
+      "consequence": "the per-asset IV/RV test still degenerates to a market-wide condition; unchanged from v1 and never presented as observed IV"
+    },
+    {
+      "deviation": "model credit instead of natural bid/ask credit",
+      "consequence": "entry pricing is optimistic relative to live execution; measured edge is an upper bound"
+    }
+  ],
+  "independence": {
+    "required_handling": "cluster same-date entries into one observation (mean PnL), identical to v1",
+    "headline_view": "cluster_adjusted",
+    "why_it_matters_here": "The whole point of this experiment is that clustering should now cost far less than it did in v1, because entries are staggered rather than simultaneous. If cluster_adjusted n does not rise well above 41, the filter did NOT add evidence and this must be reported as a negative result.",
+    "reported_views": [
+      "pooled",
+      "cluster_adjusted (HEADLINE)",
+      "spy_only"
+    ]
+  },
+  "diagnostics": {
+    "signal_rows": 1763,
+    "regime_ok_rows": 539,
+    "entries": {
+      "XLE": 17,
+      "KRE": 15,
+      "QQQ": 10,
+      "SLV": 21,
+      "XLB": 8,
+      "XLU": 11,
+      "XLRE": 9,
+      "VNQ": 7,
+      "XBI": 17,
+      "SPY": 4,
+      "DIA": 2,
+      "XLI": 9,
+      "EEM": 8,
+      "EWZ": 19,
+      "HYG": 1,
+      "XLF": 11,
+      "SMH": 19,
+      "EFA": 6,
+      "IWM": 11,
+      "FXI": 13,
+      "GLD": 11,
+      "LQD": 1,
+      "XLV": 3,
+      "GDX": 20,
+      "TLT": 8,
+      "XLK": 14,
+      "XLC": 4,
+      "XLY": 9,
+      "IEF": 2,
+      "XLP": 2
+    },
+    "dropped_censored": 19,
+    "dropped_overlap": {
+      "XLE": 246,
+      "KRE": 183,
+      "QQQ": 120,
+      "SLV": 226,
+      "XLB": 96,
+      "XLU": 128,
+      "XLRE": 112,
+      "VNQ": 73,
+      "XBI": 205,
+      "SPY": 19,
+      "DIA": 4,
+      "XLI": 102,
+      "HYG": 27,
+      "XLF": 124,
+      "SMH": 288,
+      "EWZ": 191,
+      "EFA": 96,
+      "IWM": 141,
+      "FXI": 177,
+      "EEM": 95,
+      "GLD": 141,
+      "LQD": 8,
+      "XLV": 43,
+      "GDX": 241,
+      "TLT": 53,
+      "XLK": 164,
+      "XLC": 54,
+      "XLY": 96,
+      "IEF": 30,
+      "XLP": 29
+    },
+    "dropped_no_structure": {},
+    "dropped_iv_rv": 126,
+    "dropped_qlib_filter": 8980
+  },
+  "views": {
+    "pooled": {
+      "n_trades": 292,
+      "stats": {
+        "mean_usd": 35.48,
+        "median_usd": 46.12,
+        "win_rate": 0.7945,
+        "total_usd": 10360.9,
+        "max_drawdown_usd": -1550.06,
+        "best_usd": 178.98,
+        "worst_usd": -384.39
+      },
+      "gate": {
+        "passes": false,
+        "deflated_sharpe": {
+          "sr": 0.3433,
+          "ratio": -23.9958,
+          "prob": 0.0,
+          "n": 292,
+          "n_trials": 40
+        },
+        "pbo": 0.0,
+        "profit_factor": 2.378,
+        "sharpe": 0.34331982623856105,
+        "n_trades": 292,
+        "thresholds": {
+          "deflated_sharpe_min": 0.0,
+          "pbo_max": 0.5
+        },
+        "reasons": [
+          "deflated_sharpe_ratio -23.9958 <= 0.0"
+        ]
+      },
+      "warning": "naive; same-date correlated entries counted as independent"
+    },
+    "cluster_adjusted": {
+      "n_trades": 186,
+      "stats": {
+        "mean_usd": 37.89,
+        "median_usd": 50.3,
+        "win_rate": 0.8065,
+        "total_usd": 7046.93,
+        "max_drawdown_usd": -1136.88,
+        "best_usd": 168.48,
+        "worst_usd": -360.53
+      },
+      "gate": {
+        "passes": false,
+        "deflated_sharpe": {
+          "sr": 0.3997,
+          "ratio": -17.6776,
+          "prob": 0.0,
+          "n": 186,
+          "n_trials": 40
+        },
+        "pbo": 0.0,
+        "profit_factor": 2.7265,
+        "sharpe": 0.399711228192842,
+        "n_trades": 186,
+        "thresholds": {
+          "deflated_sharpe_min": 0.0,
+          "pbo_max": 0.5
+        },
+        "reasons": [
+          "deflated_sharpe_ratio -17.6776 <= 0.0"
+        ]
+      },
+      "note": "HEADLINE \u2014 one observation per entry date; the only view a promotion decision may use"
+    },
+    "spy_only": {
+      "n_trades": 4,
+      "stats": {
+        "mean_usd": 12.72,
+        "median_usd": 132.57,
+        "win_rate": 0.75,
+        "total_usd": 50.87,
+        "max_drawdown_usd": -360.53,
+        "best_usd": 146.25,
+        "worst_usd": -360.53
+      },
+      "gate": {
+        "passes": false,
+        "deflated_sharpe": null,
+        "pbo": null,
+        "profit_factor": 1.1411,
+        "sharpe": 0.05106977615635246,
+        "n_trades": 4,
+        "thresholds": {
+          "deflated_sharpe_min": 0.0,
+          "pbo_max": 0.5
+        },
+        "reasons": [
+          "insufficient PnL for Deflated Sharpe (need >=8 trades)",
+          "insufficient PnL for PBO (need >=40 trades)"
+        ]
+      },
+      "note": "directly comparable to options_gate_v1"
+    }
+  },
+  "headline_view": "cluster_adjusted",
+  "pbo_floor_trades": 40,
+  "pbo_available": true,
+  "cleared": false,
+  "comparison_to_v1": {
+    "v1_cluster_adjusted_n": 41,
+    "v2_cluster_adjusted_n": 186,
+    "filter_added_independent_observations": true
+  },
+  "note": "Qlib-filtered population. Proxied IV and model credit still apply, so this remains an upper bound. A pass changes only a display badge."
+}

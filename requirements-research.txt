@@ -1,0 +1,7 @@
+-r requirements.txt
+
+# Offline P4 research only. The scheduled daily desk remains stdlib + Flask.
+numpy<2
+pandas>=2.0,<2.1
+pyarrow
+scikit-learn

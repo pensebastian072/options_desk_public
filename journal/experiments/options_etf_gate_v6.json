@@ -1,0 +1,30 @@
+{
+  "experiment_id": "options_etf_gate_v6",
+  "registered_at": "2026-07-23T15:30:00-04:00",
+  "status": "pre_registered_before_any_results",
+  "parent": "options_etf_gate_v5",
+  "objective": "Test whether adding a MARKET-WIDE risk-off overlay on top of v5's per-symbol 200-day gate further tames the bear-market tail. Rule: when SPY is below its own 200-day SMA (market bearish), suppress ALL put-side premium across the entire universe, not just per name; call spreads still allowed.",
+  "motivation": "v5's per-symbol 200-day gate cut 2022 to -$2802 but not to zero: some individual names briefly held above their own 200-day inside a market-wide bear and still sold puts. An index-level 'what kind of year is it' switch (SPY vs its 200-day) captures the regime the per-name gate can miss. This is the user's framing: price above the long average = bullish (sell premium ok); price below = bearish (stand down the put side).",
+  "hypothesis": "The market overlay reduces the 2022 loss further than v5, at the cost of more recovery-year upside (2020 and 2023 rebounds happen while SPY is still below its 200-day, so the overlay sits out early recovery premium). Net cluster-adjusted total is within range of v5 (+$5111); if materially worse, the overlay over-defends.",
+  "change_from_v5": {
+    "keeps": "v5's per-symbol 200-day gate (a put-side trade still needs the SYMBOL above its own 200-day).",
+    "adds": "a market gate: a put-side trade ALSO needs SPY above its own 200-day SMA on that date. Both must hold. call spreads are exempt from both gates.",
+    "single_lever": "Only the index-level overlay is added; the per-name rule is unchanged, so the marginal effect is attributable."
+  },
+  "falsifiable_predictions": [
+    "2022 loss is smaller than v5's -$2802 (the index overlay sits out the whole bear)",
+    "2020 and/or 2023 give up more upside than v5 (recovery premium sold later)",
+    "cluster-adjusted total is within +/-25% of v5 (+$5111); a large drop means the overlay over-defended and v5 was better"
+  ],
+  "guardrails": {
+    "no_p_hacking": "Registered ONCE. The index=SPY, window=200-day, and rule are fixed before running. If v6 is worse than v5, we report it and keep v5; we do not sweep index/window to find a winner.",
+    "gate_unchanged": "Canonical thresholds fixed (PBO<0.5 AND DSR>0). Fewer trades raise the deflation bar.",
+    "same_deviations": "Proxied IV, constant-IV repricing, model credit carry over -- results remain an UPPER BOUND."
+  },
+  "trial_accounting": {
+    "n_trials": 93,
+    "previous_families": {"v1": 9, "v2": 40, "v3": 93, "v4": 93, "v5": 93},
+    "reason": "same 31 symbols x 3 structures; the market overlay is a fixed rule."
+  },
+  "promotion": "No promotion. Determines whether an index-level regime switch belongs in the live desk (its own pre-registered change). SHADOW throughout."
+}

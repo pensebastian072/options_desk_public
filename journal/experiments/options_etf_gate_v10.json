@@ -1,0 +1,31 @@
+{
+  "experiment_id": "options_etf_gate_v10",
+  "registered_at": "2026-07-24T15:40:00-04:00",
+  "parent": "options_etf_gate_v5",
+  "status": "pre_registered_before_any_results",
+  "objective": "Test the user's hypothesis for why short call spreads fail: they lose on sectors with strong growth/optimism, which shows up as sustained price MOMENTUM. v10 refuses to sell call-side premium on a symbol whose 6-month (126-session) momentum is strongly positive.",
+  "user_hypothesis": "Calls only work when tied to the sector's earnings/revenue growth and optimism; high-momentum sectors 'just keep going', so selling calls on them is the losing side. Do not sell calls into a high-momentum sector.",
+  "why_momentum_is_the_proxy": {
+    "news_attempt": "The user's first suggestion was news-article COUNT per sector as an optimism proxy. Measured and REJECTED on data grounds: the Alpaca news feed tags market-wide names, not sector ETFs. In a 6-month sample SPY had 7,657 tagged articles and FXI 1,432, but SMH=1, XBI=1, XLC=1, XLY=2 -- per-sector counts are far too sparse to gate anything. Reported honestly rather than forced.",
+    "chosen_proxy": "126-session price momentum. Momentum is the market's aggregate pricing of earnings/growth/optimism and is the canonical academic factor (Jegadeesh-Titman), and we have full price history for every symbol. It captures 'this sector keeps going' directly.",
+    "prior_evidence": "The v5 call-spread post-mortem: -$913 over 7 years at an 85% win rate (avg win $35 vs avg loss $217). Losses concentrated in the era's highest-momentum names -- SMH -$629, GLD -$597, XLY -$419, QQQ -$266, XBI -$227 -- while slow/defensive names were profitable (SPY +$417, TLT +$339, XLV +$210, LQD +$202)."
+  },
+  "change_from_v5": {
+    "only_change": "CALL_SPREAD additionally requires 126-session momentum <= MOMENTUM_MAX (default +10%). Put spreads and iron condors unchanged (they keep the v5 200-day put-side gate). Everything else identical.",
+    "momentum_definition": "mom126 = spot / spot.shift(126) - 1, point-in-time (uses only data <= t)."
+  },
+  "falsifiable_predictions": [
+    "call-spread PnL improves versus v5's -$913 (the momentum names were the losers)",
+    "the improvement comes from AVOIDING losses, i.e. the number of call-spread losing trades falls proportionally more than the winners",
+    "cluster-adjusted total improves vs v5 (+$5,111)",
+    "2022 is not materially worse than v5's -$2,802 (bear-side structure retained)"
+  ],
+  "context_v9_negative": "v9 tried the symmetric TREND gate (no calls above the 200-day) and FAILED: call PnL got worse (-$913 -> -$1,929) because selling calls in a downtrend means selling into violent bear-market rallies. So direction alone is not the answer; v10 tests whether momentum STRENGTH (the user's growth/optimism proxy) is the better filter.",
+  "guardrails": {
+    "no_p_hacking": "Registered ONCE with the window (126) and threshold (+10%) fixed before running. If it fails we keep v5 and report the negative; no window/threshold sweep (a sweep would be a separate prereg counting every combination).",
+    "gate_unchanged": "PBO<0.5 AND DSR>0 fixed.",
+    "same_deviations": "Proxied IV, constant-IV repricing, model credit -> UPPER BOUND."
+  },
+  "trial_accounting": {"n_trials": 93, "note": "same universe/structures; a gate refinement."},
+  "promotion": "No promotion. SHADOW research informing whether a momentum gate belongs on the call side."
+}

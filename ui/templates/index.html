@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>options_desk</title>
+<style>
+  :root { color-scheme: dark; }
+  body { font: 14px/1.5 -apple-system, Segoe UI, Roboto, sans-serif; margin: 0;
+         background: #0d1117; color: #c9d1d9; }
+  header { padding: 14px 20px; border-bottom: 1px solid #21262d;
+           display: flex; align-items: baseline; gap: 14px; }
+  h1 { font-size: 16px; margin: 0; color: #e6edf3; }
+  .badge { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: #1f2937;
+           color: #9ca3af; border: 1px solid #30363d; }
+  .gate { font-size: 10px; padding: 1px 7px; margin-left: 8px; border-radius: 10px;
+          border: 1px solid #30363d; color: #8b949e; }
+  .gate-cleared { color: #3fb950; border-color: #238636; }
+  .gate-not_cleared { color: #d29922; border-color: #9e6a03; }
+  .wrap { padding: 20px; max-width: 900px; }
+  .sig { display: flex; flex-wrap: wrap; gap: 18px; margin: 8px 0 18px;
+         font-variant-numeric: tabular-nums; }
+  .sig div span { color: #8b949e; margin-right: 6px; }
+  .action { font-size: 15px; font-weight: 600; margin: 4px 0 2px; }
+  .a-SELL_PREMIUM { color: #3fb950; } .a-LONG_VOL { color: #58a6ff; }
+  .a-NO_TRADE { color: #8b949e; }
+  .reason { color: #8b949e; margin-bottom: 16px; }
+  .card { border: 1px solid #30363d; border-radius: 8px; padding: 12px 14px; margin: 10px 0;
+          background: #161b22; }
+  .card h3 { margin: 0 0 6px; font-size: 14px; color: #e6edf3; }
+  .legs { font-family: ui-monospace, Consolas, monospace; color: #d2a8ff; }
+  .econ { display: flex; gap: 16px; flex-wrap: wrap; margin: 6px 0; color: #adbac7;
+          font-variant-numeric: tabular-nums; }
+  .why { color: #8b949e; font-size: 13px; }
+  .foot { margin-top: 22px; color: #6e7681; font-size: 12px; }
+  .pairs { border-left: 3px solid #d29922; padding-left: 10px; margin: 14px 0; color: #adbac7; }
+  table { border-collapse: collapse; width: 100%; margin-top: 8px; font-size: 13px; }
+  th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid #21262d; }
+  th { color: #8b949e; font-weight: 500; }
+</style>
+</head>
+<body>
+<header>
+  <h1>options_desk</h1>
+  <span class="badge">SHADOW · advisory · paper</span>
+  <span class="badge">127.0.0.1:{{ port }}</span>
+</header>
+<div class="wrap">
+  <div id="lane" class="why" style="margin-bottom:12px">checking lane health…</div>
+  <div id="today">loading…</div>
+
+  <h2 style="font-size:14px;color:#8b949e;margin-top:28px;">Liquid ETF options · P5</h2>
+  <div id="etf" class="card">No live Codex/Robinhood result yet.</div>
+
+  <h2 style="font-size:14px;color:#8b949e;margin-top:28px;">Shadow results</h2>
+  <div id="perf" class="card">No settled candidates yet.</div>
+
+  <h2 style="font-size:14px;color:#8b949e;margin-top:28px;">Shadow trade ledger Â· P6</h2>
+  <div class="card">
+    <table id="trades"><thead><tr><th>status</th><th>asset</th><th>entry</th>
+      <th>mark / exit</th><th>P&amp;L</th><th>detail</th></tr></thead><tbody></tbody></table>
+  </div>
+
+  <h2 style="font-size:14px;color:#8b949e;margin-top:28px;">History</h2>
+  <table id="hist"><thead><tr><th>date</th><th>action</th><th>candidates</th><th>reason</th></tr></thead>
+  <tbody></tbody></table>
+
+  <div class="foot">SPY fallback uses Black-Scholes estimates; P5 accepts only validated
+  read-only Robinhood quotes. Gate badges are research-only. The human places any order.</div>
+</div>
+
+<script>
+function money(x){ return x==null ? "—" : "$"+x; }
+function pct(x){ return x==null ? "—" : Math.round(x*100)+"%"; }
+
+function progressHtml(pp){
+  if(!pp) return "";
+  const bar = Math.min(100, Math.round(100*pp.independent_entry_dates/pp.pbo_floor_trades));
+  return '<div class="why" style="margin-top:8px">'
+    +'gate-decidable at '+pp.pbo_floor_trades+' independent entry dates: '
+    +'<b>'+pp.independent_entry_dates+'</b>/'+pp.pbo_floor_trades
+    +' ('+pp.remaining_to_floor+' to go, '+pp.settled_trades+' settled rows)'
+    +'<div style="height:6px;background:#21262d;border-radius:3px;margin-top:4px">'
+    +'<div style="height:6px;width:'+bar+'%;background:'+(pp.gate_decidable?'#3fb950':'#d29922')+';border-radius:3px"></div></div>'
+    +'Reaching the floor only makes a verdict possible - it is not a pass.</div>';
+}
+
+function byStrategyHtml(by){
+  const names = Object.keys(by||{});
+  if(!names.length) return "";
+  let h = '<table style="margin-top:10px"><thead><tr><th>strategy</th><th>n</th>'
+        + '<th>hit rate</th><th>P&amp;L</th><th>PF</th><th>avg MFE</th><th>avg MAE</th></tr></thead><tbody>';
+  names.forEach(n=>{ const s=by[n];
+    h += '<tr><td>'+n+'</td><td>'+s.n+'</td><td>'+pct(s.hit_rate)+'</td>'
+       + '<td>'+money(s.total_pnl_usd)+'</td><td>'+(s.profit_factor==null?'—':s.profit_factor)+'</td>'
+       + '<td>'+money(s.avg_mfe_usd)+'</td><td>'+money(s.avg_mae_usd)+'</td></tr>'; });
+  return h+'</tbody></table>';
+}
+
+async function loadWatchdog(){
+  try{
+    const w = await (await fetch("/api/watchdog")).json();
+    const el = document.getElementById("lane");
+    if(!el) return;
+    const color = w.status==="OK" ? "#3fb950" : (w.status==="MISS" ? "#f85149" : "#8b949e");
+    el.innerHTML = '<span style="color:'+color+'"><b>lane '+w.status+'</b></span> — '+(w.reason||"");
+  }catch(e){}
+}
+
+async function load(){
+  loadWatchdog();
+  const s = await (await fetch("/api/state")).json();
+  const el = document.getElementById("today");
+  if(!s.ok){ el.innerHTML = '<div class="reason">'+ (s.reason||"no signal") +'</div>'; }
+  else {
+    const t = s.ticket, sig = t.signal||{};
+    let h = '<div class="action a-'+t.action+'">'+t.action+'</div>';
+    h += '<div class="reason">'+ (t.reason||"") +'</div>';
+    if(sig.spot!=null){
+      h += '<div class="sig">'
+        +'<div><span>spot</span>'+sig.spot+'</div>'
+        +'<div><span>VIX</span>'+sig.vix+'</div>'
+        +'<div><span>VRP pct</span>'+pct(sig.vrp_pct)+'</div>'
+        +'<div><span>mag pct</span>'+pct(sig.magnitude_pct)+'</div>'
+        +'<div><span>term</span>'+(sig.term_ratio==null?"—":sig.term_ratio)+'</div>'
+        +'<div><span>DTE</span>'+(t.dte||"—")+' → '+(t.expiry||"—")+'</div>'
+        +'</div>';
+    }
+    (t.candidates||[]).forEach((c,i)=>{
+      const econ = c.credit_usd!=null
+        ? '<div>credit '+money(c.credit_usd)+'</div><div>POP '+pct(c.pop)+'</div>'
+        : '<div>debit '+money(c.debit_usd)+'</div>';
+      const gate = c.gate||"not_cleared";
+      h += '<div class="card"><h3>'+(i+1)+'. '+c.strategy
+        +'<span class="gate gate-'+gate+'">'+gate.replace("_"," ")+'</span></h3>'
+        +'<div class="legs">'+(c.legs_short||"")+'</div>'
+        +'<div class="econ">'+econ+'<div>max risk '+money(c.max_risk_usd)+'</div>'
+        +'<div>BE '+(c.breakevens||"—")+'</div></div>'
+        +'<div class="why">'+(c.rationale||"")+' | pricing: '
+        +(c.enriched?'Robinhood live mid':'BS fallback estimate')+'</div></div>';
+    });
+    if(t.pairs_tilt){ h += '<div class="pairs"><b>VIX/IV pairs:</b> '+t.pairs_tilt.rationale+'</div>'; }
+    el.innerHTML = h;
+  }
+  const hist = await (await fetch("/api/history")).json();
+  const tb = document.querySelector("#hist tbody");
+  tb.innerHTML = (hist.rows||[]).map(r =>
+    '<tr><td>'+(r.date||"")+'</td><td>'+(r.action||"")+'</td>'
+    +'<td>'+((r.candidates||[]).map(c=>c.strategy).join(", ")||"—")+'</td>'
+    +'<td>'+(r.reason||"")+'</td></tr>').join("");
+  const perf = await (await fetch("/api/performance")).json();
+  const p = perf.overall||{};
+  document.getElementById("perf").innerHTML = p.n
+    ? '<div class="econ"><div>settled '+p.n+'</div><div>hits '+p.wins+'</div>'
+      +'<div>hit rate '+pct(p.hit_rate)+'</div><div>total P&amp;L '+money(p.total_pnl_usd)+'</div>'
+      +'<div>avg '+money(p.avg_pnl_usd)+'</div><div>PF '+(p.profit_factor==null?'—':p.profit_factor)+'</div></div>'
+      +'<div class="why">Hold to expiry; hit = P&amp;L &gt; 0 after fixed per-leg cost. BS entries remain labeled estimates.</div>'
+      +(p.avg_mfe_usd!=null||p.avg_mae_usd!=null
+        ? '<div class="econ"><div>avg MFE '+money(p.avg_mfe_usd)+'</div>'
+          +'<div>avg MAE '+money(p.avg_mae_usd)+'</div>'
+          +'<div>avg hold '+(p.avg_holding_days==null?'—':p.avg_holding_days+'d')+'</div>'
+          +'<div>avg ret/risk '+(p.avg_return_on_max_risk==null?'—':pct(p.avg_return_on_max_risk))+'</div></div>'
+        : '')
+      +progressHtml(perf.promotion_progress)
+      +byStrategyHtml(perf.by_strategy)
+    : '<div class="why">No candidates have reached expiry yet.</div>'+progressHtml(perf.promotion_progress);
+  const e = await (await fetch("/api/etf-state")).json();
+  const ee = document.getElementById("etf");
+  if(!e.ok){ ee.innerHTML = '<div class="why">'+(e.reason||"no P5 result")+'</div>'; }
+  else {
+    const t=e.ticket;
+    let h='<div class="action a-'+t.action+'">'+t.action+'</div><div class="reason">'+(t.reason||"")+'</div>';
+    (t.candidates||[]).forEach((c,i)=>{
+      h += '<div class="card"><h3>'+(i+1)+'. '+c.underlying+' '+c.strategy+'</h3>'
+        +'<div class="legs">'+(c.legs_short||"")+'</div><div class="econ">'
+        +'<div>credit '+money(c.credit_usd)+'</div><div>max risk '+money(c.max_risk_usd)+'</div>'
+        +'<div>IV/RV '+(c.iv_rv_ratio==null?'—':c.iv_rv_ratio)+'</div>'
+        +'<div>Qlib '+pct(c.qlib_conviction)+'</div></div>'
+        +'<div class="why">'+(c.rationale||"")+' | '+(c.source||"")+'</div></div>';
+    });
+    ee.innerHTML=h;
+  }
+  const ledger = await (await fetch("/api/trades")).json();
+  const tradeRows = [];
+  const exitCash = m => m.exit_debit_usd > 0
+    ? money(m.exit_debit_usd)+' debit'
+    : money(m.exit_credit_usd)+' credit';
+  (ledger.open||[]).forEach(r=>{
+    const m=r.last_mark||{};
+    tradeRows.push('<tr><td>OPEN</td><td>'+(r.underlying||'')+'</td>'
+      +'<td>'+money(r.entry_cash_usd)+'</td><td>'+(m.exit_debit_usd==null?'unmarked':exitCash(m))+'</td>'
+      +'<td>'+(m.unrealized_pnl_usd==null?'â€”':money(m.unrealized_pnl_usd))+'</td>'
+      +'<td>'+(m.dte==null?'expires '+(r.expiry||''):'DTE '+m.dte)+' | '+(r.entry_source||'')+'</td></tr>');
+  });
+  (ledger.settled||[]).forEach(r=>{
+    tradeRows.push('<tr><td>SETTLED</td><td>'+(r.underlying||'')+'</td>'
+      +'<td>'+money(r.entry_cash_usd)+'</td><td>'+exitCash(r)+'</td>'
+      +'<td>'+money(r.pnl_usd)+'</td><td>'+(r.exit_reason||'expiration')+' | '+(r.exit_source||'')+'</td></tr>');
+  });
+  document.querySelector('#trades tbody').innerHTML = tradeRows.join('')
+    || '<tr><td colspan="6" class="why">No SHADOW candidates have opened yet.</td></tr>';
+}
+load(); setInterval(load, 60000);
+</script>
+</body>
+</html>

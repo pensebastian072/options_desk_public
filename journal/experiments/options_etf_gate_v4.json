@@ -1,0 +1,37 @@
+{
+  "experiment_id": "options_etf_gate_v4",
+  "registered_at": "2026-07-23T14:30:00-04:00",
+  "status": "pre_registered_before_any_results",
+  "parent": "options_etf_gate_v3",
+  "objective": "Test whether a per-symbol trend filter -- do NOT sell put-side premium (put spread or iron condor) when the underlying is below its 50-day moving average -- removes the directional-down-month bleed that cost v3 in 2022 and 2023, without materially hurting the profitable years.",
+  "motivation": {
+    "evidence": "The v3 per-trade ledger showed both losing years were concentrated directional-down windows, not whole years. 2022 losses clustered in Jan/Apr/Jul/Aug (sharp SPX down-legs); 2023 was profitable through July and lost it all in the Sep-Oct yield-spike selloff. Worst names were high-beta cyclicals (XLY, QQQ, XLI, SPY) in 2022. The desk sold put-side premium (condors + put spreads) into falling names while Qlib's neutral lean kept it in condors.",
+    "mechanism": "Premium selling has small capped wins and large uncapped losses (2022 avg loss $192 vs avg win $58, 3.3x). A directional downtrend turns the put side into repeated near-max losses. Not selling puts into a downtrend should cut the left tail."
+  },
+  "hypothesis": "Requiring price > 50-day SMA to sell put-side structures reduces 2022/2023 drawdown substantially while leaving 2019-2021 and 2024-2026 roughly intact (they were mostly uptrends), improving total and per-year stability.",
+  "change_from_v3": {
+    "only_change": "Add a per-symbol trend gate. Everything else (universe, lean routing, POP>=0.51, IV/RV floors, $1000 cap, 50%-target exit, eruption veto, clustering) is IDENTICAL to v3.",
+    "trend_gate": {
+      "measure": "symbol close vs its trailing 50-session simple moving average from the local Qlib CSV (point-in-time, no lookahead)",
+      "rule": "if close < SMA50 (downtrend): DROP put_spread and iron_condor for that symbol that day (both carry short-put exposure). call_spread (bearish) is still allowed. If close >= SMA50: all structures as v3.",
+      "rationale": "Never sell puts into a falling name. Bearish call spreads are welcome in a downtrend."
+    }
+  },
+  "falsifiable_predictions": [
+    "2022 total loss shrinks by at least half vs v3 (-$7025)",
+    "2023 turns profitable or near-flat vs v3 (-$1273)",
+    "the profitable years lose less than 25% of their v3 PnL (they were mostly uptrends, so the gate rarely binds)",
+    "cluster-adjusted total PnL improves vs v3 (+$2830)"
+  ],
+  "guardrails": {
+    "no_p_hacking": "Registered ONCE. The 50-day window and the 'drop put-side below SMA' rule are fixed before running. If it fails or a different window looks better after the fact, that is a NEW variant (v5), not a retune of v4.",
+    "gate_unchanged": "Canonical thresholds fixed (PBO<0.5 AND DSR>0). Fewer trades will RAISE the per-trade bar via deflation; improvement must be real, not a smaller-n artifact.",
+    "same_deviations": "Proxied IV, constant-IV repricing, and model credit all carry over from v3 -- results remain an UPPER BOUND, and 2022 in particular is understated."
+  },
+  "trial_accounting": {
+    "n_trials": 93,
+    "previous_families": {"options_etf_gate_v1": 9, "options_etf_gate_v2": 40, "options_etf_gate_v3": 93},
+    "reason": "same 31 symbols x 3 structures search space; the trend gate is a fixed rule, not a swept parameter."
+  },
+  "promotion": "No promotion. Informs whether a trend guard belongs in the live desk (which would be its own pre-registered change). SHADOW throughout."
+}

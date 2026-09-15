@@ -1,0 +1,77 @@
+{
+  "experiment_id": "options_etf_universe_v1",
+  "registered_at": "2026-07-22T12:15:00-04:00",
+  "status": "pre_registered_before_live_shadow_results",
+  "objective": "Test whether the existing defined-risk short-put-spread structure transfers to a frozen set of liquid US-listed ETFs when Qlib supplies bullish discovery ranks and live Robinhood quotes pass deterministic liquidity and asset-specific IV/RV gates.",
+  "scope": {
+    "mode": "SHADOW advisory only",
+    "strategy": "etf_short_put_spread_v1",
+    "candidate_universe": {
+      "SPY": {"qlib_asset": "SPY", "bucket": "broad_equity", "spread_width": 5.0},
+      "QQQ": {"qlib_asset": "QQQ", "bucket": "broad_equity", "spread_width": 5.0},
+      "IWM": {"qlib_asset": "IWM", "bucket": "broad_equity", "spread_width": 5.0},
+      "DIA": {"qlib_asset": "DIA", "bucket": "broad_equity", "spread_width": 5.0},
+      "TLT": {"qlib_asset": "TLT", "bucket": "rates", "spread_width": 2.0},
+      "GLD": {"qlib_asset": "GOLD", "bucket": "metals", "spread_width": 5.0},
+      "SLV": {"qlib_asset": "SLV", "bucket": "metals", "spread_width": 1.0},
+      "XLF": {"qlib_asset": "XLF", "bucket": "sector", "spread_width": 1.0},
+      "XLE": {"qlib_asset": "XLE", "bucket": "sector", "spread_width": 1.0}
+    },
+    "excluded": "single stocks, leveraged/inverse ETFs, FX, crypto, indexes, futures, and every symbol outside the frozen map"
+  },
+  "entry_policy": {
+    "request_freshness": "The finalizer accepts only a request generated on the same America/New_York calendar date.",
+    "qlib": {
+      "required_fresh": true,
+      "status": "SHADOW discovery input; lack of promotion is displayed and never hidden",
+      "lean": 1,
+      "minimum_conviction": 0.70
+    },
+    "global_veto": {
+      "vol_signal_required_fresh": true,
+      "eruption_predicted": false,
+      "calm_5d": true,
+      "magnitude_pct_max_exclusive": 0.70
+    },
+    "asset_volatility": {
+      "realized_vol": "annualized standard deviation of the last 20 completed daily log returns from the local Qlib CSV",
+      "implied_vol": "Robinhood short-put quote implied_volatility",
+      "minimum_iv_rv_ratio": 1.10
+    },
+    "contracts": {
+      "dte_min": 30,
+      "dte_target": 45,
+      "dte_max": 60,
+      "short_put_delta_min": -0.35,
+      "short_put_delta_max": -0.25,
+      "long_put": "same expiry, lower strike, nearest available strike to the frozen per-symbol spread_width",
+      "entry_price": "natural executable-side credit: short bid minus long ask"
+    },
+    "liquidity": {
+      "quote_max_age_minutes": 15,
+      "bid_required_positive": true,
+      "ask_required_gte_bid": true,
+      "maximum_relative_spread_per_leg": 0.15,
+      "minimum_open_interest": 100,
+      "or_minimum_daily_volume": 20,
+      "minimum_bid_and_ask_size_when_reported": 1
+    }
+  },
+  "portfolio_policy": {
+    "maximum_candidates": 5,
+    "one_candidate_per_underlying": true,
+    "bucket_caps": {"broad_equity": 2, "sector": 1, "rates": 1, "metals": 1},
+    "ranking": ["qlib_conviction_desc", "return_on_risk_desc", "maximum_leg_relative_spread_asc", "symbol_asc"],
+    "never_force_five": true
+  },
+  "trial_accounting": {
+    "n_trials": 9,
+    "reason": "One frozen strategy-underlying hypothesis for each of nine eligible ETFs; all retries and future parameter variants must increase this count.",
+    "promotion": "No promotion before canonical DSR > 0 and PBO < 0.5, at least 40 settled non-overlapping observations, cost/liquidity checks, and human review."
+  },
+  "macro_policy": {
+    "hq_macro_universe": "context and audit metadata only; never a source of tradable symbols",
+    "macro_gpu": "context only unless fresh; stale or missing stays unknown and cannot create a candidate",
+    "no_opaque_blending": true
+  }
+}

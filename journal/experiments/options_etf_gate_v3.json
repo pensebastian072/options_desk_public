@@ -1,0 +1,69 @@
+{
+  "experiment_id": "options_etf_gate_v3",
+  "registered_at": "2026-07-23T13:30:00-04:00",
+  "status": "pre_registered_before_any_results",
+  "supersedes_none": "v1 and v2 gate backtests remain their own frozen audit records; this is a distinct hypothesis.",
+  "objective": "Measure whether the LIVE v3 ETF desk (eruption-only veto, all three structures routed by point-in-time Qlib lean, defined-risk, $1000 cap) is profitable over 2019-2026 when winners are closed at a 50%-of-credit profit target, and whether it clears the canonical overfit gate.",
+  "hypothesis": "Routing by Qlib lean and closing at 50% of max profit produces a positive, regime-stable equity curve and at least a decidable (not necessarily passing) gate result on cluster-adjusted observations.",
+  "scope": {
+    "mode": "offline research; SHADOW advisory only; no broker integration; informs but does not change the live desk",
+    "structures": ["etf_short_put_spread_v1", "etf_short_call_spread_v1", "etf_iron_condor_v1"],
+    "routing": "combined point-in-time Qlib lean: +1 -> put spread, -1 -> call spread, 0 -> iron condor",
+    "universe_source": "options_etf_universe_v2 candidate_universe (31 symbols, frozen widths)",
+    "score_source": "qlib_lab/journal/exports/qlib_score_history.parquet (walk-forward, no lookahead, 2019-07-18 ->)",
+    "price_source": "local qlib_lab/csv/<asset>.csv, Yahoo back-adjustment undone via the factor column"
+  },
+  "entry_policy": {
+    "hard_veto": "predicted vol eruption OR missing/stale signal ONLY (matches live v3). Magnitude and calm do NOT filter.",
+    "qlib_filter": {
+      "directional_minimum_conviction": 0.70,
+      "iron_condor_conviction": "neutral lean carries no conviction bar; it instead requires the richer iron-condor IV/RV floor"
+    },
+    "contracts": "monthly third-Friday nearest 45 DTE within 30-60; short leg ~0.30 delta; long leg exactly spread_width beyond",
+    "iv_rv": {"directional": 1.10, "iron_condor": 1.20},
+    "per_trade_cap_usd": 1000,
+    "minimum_pop": 0.51,
+    "pop_definition": "Probability of profit AT EXPIRY (tastytrade convention): the risk-neutral BS probability that the underlying finishes on the profitable side of the structure's breakeven(s). Put spread: P(S_T > short_strike - credit). Call spread: P(S_T < short_strike + credit). Iron condor: P(lower_BE < S_T < upper_BE). Uses entry IV and DTE. NOTE: closing at the 50% target realizes profit MORE often than this at-expiry POP, so 0.51 is a conservative floor.",
+    "non_overlap": "one open position per (symbol, structure); no new entry until the prior one exits"
+  },
+  "exit_policy": {
+    "rule": "50% profit target: close the first day the position's marked profit reaches 50% of entry credit.",
+    "fallback": "if the target is never reached, settle at expiration intrinsic value (hold-to-expiry).",
+    "costs": "BACKTEST_COST_PER_LEG_RT applied per leg, round trip",
+    "also_reported": "a hold-to-expiry variant on the SAME entries is reported side-by-side so the target's effect is legible (not a separate promotion claim)."
+  },
+  "declared_deviations": [
+    {
+      "deviation": "no historical option quotes exist on this box",
+      "consequence": "the 50%-target crossing is detected by BS-REPRICING each leg along the daily underlying path"
+    },
+    {
+      "deviation": "entry implied volatility is held CONSTANT along the repricing path",
+      "reason": "no historical IV surface; entry IV itself is proxied (RV20 x market premium factor, as in v1/v2)",
+      "consequence": "ignores vol expansion/contraction after entry. For a short-premium book this is OPTIMISTIC (a real vol spike would raise the cost to close and delay/deny the target). Measured edge is an UPPER BOUND; never presented as executable."
+    },
+    {
+      "deviation": "entry credit is a model credit, not natural bid/ask",
+      "consequence": "entry pricing is optimistic vs live execution, same as v1/v2"
+    }
+  ],
+  "independence_and_inference": {
+    "required_handling": "cluster same-date entries into one observation (mean PnL), as in v1/v2",
+    "headline_view": "cluster_adjusted",
+    "reported_views": ["pooled", "cluster_adjusted (HEADLINE)", "spy_only"],
+    "profitability_reporting": "per-year table (n, win rate, PnL, PF, avg holding days, % exited at target) + a cumulative equity curve. Descriptive; the gate verdict is the promotion test, not the equity curve."
+  },
+  "trial_accounting": {
+    "n_trials": 93,
+    "previous_families": {"options_etf_gate_v1": 9, "options_etf_gate_v2": 40},
+    "reason": "31 symbols x 3 structures = 93 symbol-structure hypotheses reachable under this rule.",
+    "no_threshold_softening": "Canonical thresholds fixed: PBO < 0.5 AND Deflated Sharpe > 0. A positive equity curve or high PF never overrides a failed DSR.",
+    "no_p_hacking": "This experiment is registered ONCE. If the result is poor we do NOT retune v3 on the same data to make it pass. Any parameter change (delta, DTE, target %, universe, exit) is a NEW pre-registered variant (v4) and re-counts trials. Adopting the 50% target in the LIVE desk is a separate change with its own pre-registration."
+  },
+  "falsifiable_predictions": [
+    "cluster_adjusted n >= 100",
+    "PBO is computable (>= 40 cluster observations)",
+    "50%-target cluster-adjusted total PnL differs from the hold-to-expiry variant (target changes the distribution)"
+  ],
+  "promotion": "No promotion. A pass changes only a display badge. Live adoption additionally requires natural-pricing confirmation, live-quote liquidity validation, an honest vol-path treatment, and human review."
+}
