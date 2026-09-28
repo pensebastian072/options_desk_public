@@ -1,5 +1,13 @@
 # options_desk — advisory options research desk (SHADOW / paper only)
 
+<!-- one-tap-install -->
+[![Download ZIP](https://img.shields.io/badge/Download-ZIP-2ea44f?style=for-the-badge&logo=github)](https://github.com/pensebastian072/options_desk_public/archive/refs/heads/main.zip)
+
+**Run it on your computer in 3 steps:** 1) [download the ZIP](https://github.com/pensebastian072/options_desk_public/archive/refs/heads/main.zip) · 2) unzip it · 3) double-click **`install.bat`** (Windows) or run **`./install.sh`** (macOS/Linux).
+The dashboard opens in your browser at `http://127.0.0.1:8078` - it runs only on your machine. Next time use `start.bat` / `./start.sh`.
+For the full research stack (large downloads) use `install.bat --full` / `./install.sh --full`.
+<!-- one-tap-install -->
+
 A daily **pre-open option-trade alert** system for liquid US ETFs, plus the research
 harness that produced its rules. It reads a volatility/regime signal, routes each symbol to
 one defined-risk option structure, validates candidates against liquidity and probability

@@ -55,7 +55,7 @@
   <h2 style="font-size:14px;color:#8b949e;margin-top:28px;">Shadow results</h2>
   <div id="perf" class="card">No settled candidates yet.</div>
 
-  <h2 style="font-size:14px;color:#8b949e;margin-top:28px;">Shadow trade ledger Â· P6</h2>
+  <h2 style="font-size:14px;color:#8b949e;margin-top:28px;">Shadow trade ledger · P6</h2>
   <div class="card">
     <table id="trades"><thead><tr><th>status</th><th>asset</th><th>entry</th>
       <th>mark / exit</th><th>P&amp;L</th><th>detail</th></tr></thead><tbody></tbody></table>
@@ -189,7 +189,7 @@ async function load(){
     const m=r.last_mark||{};
     tradeRows.push('<tr><td>OPEN</td><td>'+(r.underlying||'')+'</td>'
       +'<td>'+money(r.entry_cash_usd)+'</td><td>'+(m.exit_debit_usd==null?'unmarked':exitCash(m))+'</td>'
-      +'<td>'+(m.unrealized_pnl_usd==null?'â€”':money(m.unrealized_pnl_usd))+'</td>'
+      +'<td>'+(m.unrealized_pnl_usd==null?'—':money(m.unrealized_pnl_usd))+'</td>'
       +'<td>'+(m.dte==null?'expires '+(r.expiry||''):'DTE '+m.dte)+' | '+(r.entry_source||'')+'</td></tr>');
   });
   (ledger.settled||[]).forEach(r=>{
